@@ -1,0 +1,23 @@
+name: Build
+on:
+  - push
+
+jobs:
+  Build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker Build
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/digital-asset/wallet-gateway-unstable/docker/wallet-gateway:unstable
