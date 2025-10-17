@@ -16,8 +16,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - id: version
+        run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
       - name: Docker Build
         uses: docker/build-push-action@v6
         with:
+          build-args: version=${{ steps.version.outputs.version }}
           push: true
-          tags: ghcr.io/digital-asset/wallet-gateway-unstable/docker/wallet-gateway:unstable
+          tags: ghcr.io/digital-asset/wallet-gateway/docker/wallet-gateway:v${{ steps.version.outputs.version }}
