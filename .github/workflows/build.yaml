@@ -1,6 +1,8 @@
 name: Build
 on:
   - push
+env:
+  TARGET: ${{ github.ref == 'refs/heads/main' && 'wallet-gateway' || 'wallet-gateway-unstable' }}
 
 jobs:
   Build:
@@ -23,4 +25,4 @@ jobs:
         with:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
-          tags: ghcr.io/digital-asset/wallet-gateway/docker/wallet-gateway:v${{ steps.version.outputs.version }}
+          tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
