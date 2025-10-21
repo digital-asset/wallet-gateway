@@ -1,4 +1,6 @@
-FROM cgr.dev/chainguard/node
+FROM node:24.9.0-alpine3.22
 ARG version=REQUIRED
-RUN npm install @canton-network/wallet-gateway-remote@${version}
-ENTRYPOINT ["./node_modules/.bin/wallet-gateway-remote", "-c", "./config.json"]
+USER node:node
+WORKDIR /app
+RUN npm --loglevel silly install @canton-network/wallet-gateway-remote@${version}
+ENTRYPOINT ["./node_modules/.bin/wallet-gateway-remote"]
