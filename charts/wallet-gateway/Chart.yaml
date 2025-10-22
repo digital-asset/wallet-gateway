@@ -1,0 +1,8 @@
+apiVersion: v2
+name: wallet-gateway
+description: Helps facilitate communication between a Validator node, a canton developed dApp and a Wallet Provider.
+type: application
+version: 0.0.0
+home: https://www.npmjs.com/package/@canton-network/wallet-gateway-remote
+sources:
+  - https://github.com/hyperledger-labs/splice-wallet-kernel

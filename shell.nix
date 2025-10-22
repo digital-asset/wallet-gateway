@@ -14,7 +14,7 @@ nixPkgs.mkShell (
     packages = [
       (wrapHelm kubernetes-helm {
         plugins = [
-          kubernetes-helmPlugins.helm-diff
+          kubernetes-helmPlugins.helm-schema
           kubernetes-helmPlugins.helm-unittest
         ];
       })

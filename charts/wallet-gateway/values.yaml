@@ -1,0 +1,13 @@
+imageRepo: ghcr.io/digital-asset/wallet-gateway/docker
+imageTag: ""
+kernel:
+  id: remote-da
+  clientType: remote
+  url: ""
+  userUrl: ""
+store:
+  connection:
+    type: sqlite
+    database: store.sqlite
+  # @schema item: object
+  networks: []
