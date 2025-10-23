@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: all
+release:
+  name: wallet-gateway
+  namespace: wallet-gateway
+tests:
+  - it: should render the configmap correctly
+    templates:
+      - configmap.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: data["config.json"]
+          value: |
+            {
+              "kernel": {
+                "clientType": "remote",
+                "id": "remote-da",
+                "url": "",
+                "userUrl": ""
+              },
+              "store": {
+                "connection": {
+                  "database": "store.sqlite",
+                  "type": "sqlite"
+                },
+                "networks": []
+              }
+            }
