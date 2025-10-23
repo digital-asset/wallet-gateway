@@ -29,7 +29,7 @@ jobs:
       - name: Helm unittests
         run: make test
 
-  docker-build:
+  docker-build-and-publish:
     runs-on: digital-asset-wallet-gateway
     permissions:
       contents: read
@@ -51,3 +51,15 @@ jobs:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
           tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
+
+  helm-publish:
+    runs-on: digital-asset-wallet-gateway
+    permissions:
+      contents: read
+      packages: write
+    needs:
+      - check
+      - docker-build-and-publish
+    steps:
+      - uses: actions/checkout@v5
+      - run: make package
