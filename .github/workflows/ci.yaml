@@ -1,13 +1,35 @@
-name: Build
+name: ci
 on:
   - push
 env:
   TARGET: ${{ github.ref == 'refs/heads/main' && 'wallet-gateway' || 'wallet-gateway-unstable' }}
 defaults:
   run:
-    shell: nix-shell --run "exec bash {0}"
+    shell: nix-shell --run "exec bash -euo pipefail {0}"
+
 jobs:
-  Build:
+  check:
+    runs-on: digital-asset-wallet-gateway
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check schema
+        run: |
+          make generate
+          out="$(git status --porcelain)"
+          if [ ! -z "${out}" ]; then
+            echo "Helm schema needs to be re-generated, please run 'make generate'"
+            echo "${out}"
+            exit 1
+          fi
+          echo "No changes"
+      - name: Helm unittests
+        run: make test
+
+  docker-build:
     runs-on: digital-asset-wallet-gateway
     permissions:
       contents: read
@@ -20,16 +42,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - id: version
+      - name: Get Version
+        id: version
         run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
-      - name: Docker Build
+      - name: Docker Build and Publish
         uses: docker/build-push-action@v6
         with:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
           tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
-      - name: Test Nix
-        run: |
-          which helm
-          helm version
-          helm plugin list
