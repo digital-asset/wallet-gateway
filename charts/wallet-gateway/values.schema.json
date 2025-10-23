@@ -53,6 +53,77 @@
                     "type": "array",
                     "items": {
                         "type": "object",
+                        "properties": {
+                            "auth": {
+                                "type": "object",
+                                "properties": {
+                                    "admin": {
+                                        "type": "object",
+                                        "properties": {
+                                            "clientId": {
+                                                "type": "string"
+                                            },
+                                            "clientSecret": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "audience": {
+                                        "type": "string"
+                                    },
+                                    "clientId": {
+                                        "type": "string"
+                                    },
+                                    "clientSecret": {
+                                        "type": "string"
+                                    },
+                                    "configUrl": {
+                                        "type": "string"
+                                    },
+                                    "grantType": {
+                                        "type": "string"
+                                    },
+                                    "identityProviderId": {
+                                        "type": "string"
+                                    },
+                                    "issuer": {
+                                        "type": "string"
+                                    },
+                                    "scope": {
+                                        "type": "string"
+                                    },
+                                    "tokenUrl": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "chainId": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "ledgerApi": {
+                                "type": "object",
+                                "properties": {
+                                    "baseUrl": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "synchronizerId": {
+                                "type": "string"
+                            }
+                        },
                         "additionalProperties": false
                     }
                 }
