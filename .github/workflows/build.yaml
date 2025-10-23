@@ -3,7 +3,9 @@ on:
   - push
 env:
   TARGET: ${{ github.ref == 'refs/heads/main' && 'wallet-gateway' || 'wallet-gateway-unstable' }}
-
+defaults:
+  run:
+    shell: nix-shell --run "exec bash {0}"
 jobs:
   Build:
     runs-on: digital-asset-wallet-gateway
@@ -26,3 +28,8 @@ jobs:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
           tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
+      - name: Test Nix
+        run: |
+          which helm
+          helm version
+          helm plugin list
