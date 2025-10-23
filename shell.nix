@@ -18,6 +18,8 @@ nixPkgs.mkShell (
           kubernetes-helmPlugins.helm-unittest
         ];
       })
+      gnumake
+      unixtools.watch
     ];
   }
 )
