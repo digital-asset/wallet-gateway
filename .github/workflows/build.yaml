@@ -6,7 +6,7 @@ env:
 
 jobs:
   Build:
-    runs-on: ubuntu-24.04
+    runs-on: digital-asset-wallet-gateway
     permissions:
       contents: read
       packages: write
