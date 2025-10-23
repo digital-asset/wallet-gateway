@@ -62,4 +62,7 @@ jobs:
       - docker-build-and-publish
     steps:
       - uses: actions/checkout@v5
-      - run: make package
+      - name: Helm package
+        run: make package
+      - name: Helm push
+        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-$(<VERSION).tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm/wallet-gateway
