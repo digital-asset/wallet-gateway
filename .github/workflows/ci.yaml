@@ -62,7 +62,15 @@ jobs:
       - docker-build-and-publish
     steps:
       - uses: actions/checkout@v5
+      - name: Get Version
+        id: version
+        run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
       - name: Helm package
         run: make package
+      - name: Archive helm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm package
+          path: target/wallet-gateway-${{ steps.version.outputs.version }}.tgz
       - name: Helm push
-        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-$(<VERSION).tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm/wallet-gateway
+        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm/wallet-gateway
