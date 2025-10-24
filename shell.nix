@@ -7,6 +7,7 @@ let
     inherit sha256;
   }) { };
 
+  helm-unittest = import ./nix/helm-unittest.nix;
 in
 nixPkgs.mkShell (
   with nixPkgs;
@@ -14,11 +15,12 @@ nixPkgs.mkShell (
     packages = [
       (wrapHelm kubernetes-helm {
         plugins = [
+          (callPackage helm-unittest { })
           kubernetes-helmPlugins.helm-schema
-          kubernetes-helmPlugins.helm-unittest
         ];
       })
       gnumake
+      kubeconform
       unixtools.watch
     ];
   }
