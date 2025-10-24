@@ -4,7 +4,19 @@ release:
   name: wallet-gateway
   namespace: wallet-gateway
 tests:
-  - it: should render the configmap correctly
+  - it: should render a deployment
+    templates:
+      - deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+  - it: should render a service
+    templates:
+      - service.yaml
+    asserts:
+      - isKind:
+          of: Service
+  - it: should render a configmap (correctly)
     templates:
       - configmap.yaml
     asserts:
