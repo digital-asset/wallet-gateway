@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name}}-wallet-gateway"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app: "{{ .Release.Name}}-wallet-gateway"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name}}-wallet-gateway"
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name}}-wallet-gateway"
+    spec:
+      containers:
+        - name: wallet-gateway
+          image: "{{ .Values.image.repo }}/wallet-gateway:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          volumeMounts:
+            - name: config
+              mountPath: /app
+      volumes:
+        - name: config
+          configMap:
+            name: "{{ .Release.Name}}-wallet-gateway"
