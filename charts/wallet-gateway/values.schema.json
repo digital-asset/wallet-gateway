@@ -10,11 +10,17 @@
                 "null"
             ]
         },
-        "imageRepo": {
-            "type": "string"
-        },
-        "imageTag": {
-            "type": "string"
+        "image": {
+            "type": "object",
+            "properties": {
+                "repo": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
         },
         "kernel": {
             "type": "object",

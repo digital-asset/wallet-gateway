@@ -1,5 +1,6 @@
-imageRepo: ghcr.io/digital-asset/wallet-gateway/docker
-imageTag: ""
+image:
+  repo: ghcr.io/digital-asset/wallet-gateway/docker
+  tag: ""
 kernel:
   id: remote-da
   clientType: remote
