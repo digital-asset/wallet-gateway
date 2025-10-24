@@ -4,6 +4,30 @@ release:
   name: wallet-gateway
   namespace: wallet-gateway
 tests:
+  - it: should be valid manifests
+    postRenderer:
+      cmd: bash
+      args:
+        - -c
+        - |
+          set -euo pipefail
+
+          # cache directory for kubeconform
+          mkdir -p cache/kubeconform
+
+          # clone fd/1
+          exec {out}<&1
+
+          # tee all stdin back out to fd/1 via the clone, then tee to cat to
+          # add line numbers, then tee to kubeconform which will validate the
+          # rendered manifest
+          tee >(cat >&${out}) | \
+          tee >(cat -n >&2) | \
+          kubeconform -verbose -strict -cache cache/kubeconform >&2
+    asserts:
+      - hasDocuments:
+          count: 1
+
   - it: should render a deployment
     templates:
       - deployment.yaml
