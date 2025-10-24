@@ -73,4 +73,4 @@ jobs:
           name: helm package
           path: target/wallet-gateway-${{ steps.version.outputs.version }}.tgz
       - name: Helm push
-        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm/wallet-gateway
+        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm
