@@ -45,11 +45,16 @@ jobs:
       - name: Get Version
         id: version
         run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Docker Build and Publish
         uses: docker/build-push-action@v6
         with:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
 
   helm-publish:
