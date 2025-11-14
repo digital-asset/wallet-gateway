@@ -30,7 +30,10 @@ jobs:
         run: make test
 
   docker-build-and-publish:
-    runs-on: digital-asset-wallet-gateway
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
     permissions:
       contents: read
       packages: write
