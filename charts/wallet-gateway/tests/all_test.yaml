@@ -61,6 +61,7 @@ tests:
                   "database": "store.sqlite",
                   "type": "sqlite"
                 },
+                "idps": [],
                 "networks": []
               }
             }
