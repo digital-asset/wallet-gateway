@@ -55,26 +55,35 @@
                     },
                     "additionalProperties": false
                 },
+                "idps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "configUrl": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "issuer": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
                 "networks": {
                     "type": "array",
                     "items": {
                         "type": "object",
                         "properties": {
-                            "auth": {
+                            "adminAuth": {
                                 "type": "object",
                                 "properties": {
-                                    "admin": {
-                                        "type": "object",
-                                        "properties": {
-                                            "clientId": {
-                                                "type": "string"
-                                            },
-                                            "clientSecret": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
                                     "audience": {
                                         "type": "string"
                                     },
@@ -84,34 +93,49 @@
                                     "clientSecret": {
                                         "type": "string"
                                     },
-                                    "configUrl": {
-                                        "type": "string"
-                                    },
-                                    "grantType": {
-                                        "type": "string"
-                                    },
-                                    "identityProviderId": {
-                                        "type": "string"
-                                    },
                                     "issuer": {
                                         "type": "string"
                                     },
+                                    "method": {
+                                        "type": "string"
+                                    },
                                     "scope": {
-                                        "type": "string"
-                                    },
-                                    "tokenUrl": {
-                                        "type": "string"
-                                    },
-                                    "type": {
                                         "type": "string"
                                     }
                                 },
                                 "additionalProperties": false
                             },
-                            "chainId": {
-                                "type": "string"
+                            "auth": {
+                                "type": "object",
+                                "properties": {
+                                    "audience": {
+                                        "type": "string"
+                                    },
+                                    "clientId": {
+                                        "type": "string"
+                                    },
+                                    "clientSecret": {
+                                        "type": "string"
+                                    },
+                                    "issuer": {
+                                        "type": "string"
+                                    },
+                                    "method": {
+                                        "type": "string"
+                                    },
+                                    "scope": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
                             },
                             "description": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "string"
+                            },
+                            "identityProviderId": {
                                 "type": "string"
                             },
                             "ledgerApi": {
