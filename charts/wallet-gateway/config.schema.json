@@ -1,0 +1,490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kernel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "clientType": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "browser"
+            },
+            {
+              "type": "string",
+              "const": "desktop"
+            },
+            {
+              "type": "string",
+              "const": "mobile"
+            },
+            {
+              "type": "string",
+              "const": "remote"
+            }
+          ]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "userUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "clientType",
+        "url",
+        "userUrl"
+      ],
+      "additionalProperties": false
+    },
+    "store": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "memory"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "sqlite"
+                },
+                "database": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "database"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "postgres"
+                },
+                "host": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "database": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "host",
+                "port",
+                "user",
+                "password",
+                "database"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "idps": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "self_signed"
+                  },
+                  "issuer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "type",
+                  "issuer"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "oauth"
+                  },
+                  "issuer": {
+                    "type": "string"
+                  },
+                  "configUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "id",
+                  "type",
+                  "issuer",
+                  "configUrl"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "networks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "synchronizerId": {
+                "type": "string"
+              },
+              "identityProviderId": {
+                "type": "string"
+              },
+              "ledgerApi": {
+                "type": "object",
+                "properties": {
+                  "baseUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                },
+                "required": [
+                  "baseUrl"
+                ],
+                "additionalProperties": false
+              },
+              "auth": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "authorization_code"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "audience",
+                      "scope",
+                      "clientId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "client_credentials"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "clientSecret": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "audience",
+                      "scope",
+                      "clientId",
+                      "clientSecret"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "self_signed"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "clientSecret": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "issuer",
+                      "audience",
+                      "scope",
+                      "clientId",
+                      "clientSecret"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "adminAuth": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "authorization_code"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "audience",
+                      "scope",
+                      "clientId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "client_credentials"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "clientSecret": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "audience",
+                      "scope",
+                      "clientId",
+                      "clientSecret"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "self_signed"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "audience": {
+                        "type": "string"
+                      },
+                      "scope": {
+                        "type": "string"
+                      },
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "clientSecret": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "issuer",
+                      "audience",
+                      "scope",
+                      "clientId",
+                      "clientSecret"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "description",
+              "identityProviderId",
+              "ledgerApi",
+              "auth"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "connection",
+        "idps",
+        "networks"
+      ],
+      "additionalProperties": false
+    },
+    "signingStore": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "memory"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "sqlite"
+                },
+                "database": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "database"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "postgres"
+                },
+                "host": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "database": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "host",
+                "port",
+                "user",
+                "password",
+                "database"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "connection"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "kernel",
+    "store",
+    "signingStore"
+  ],
+  "additionalProperties": false
+}

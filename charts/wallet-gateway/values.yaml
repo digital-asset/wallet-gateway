@@ -10,9 +10,5 @@ store:
   connection:
     type: sqlite
     database: store.sqlite
-
-  # @schema item: object; itemProperties:{"id":{"type":"string"},"type":{"type":"string"},"issuer":{"type":"string"},"configUrl":{"type":"string"}}
   idps: []
-
-  # @schema item: object; itemProperties:{"auth":{"type":"object","properties":{"audience":{"type":"string"},"clientId":{"type":"string"},"clientSecret":{"type":"string"},"issuer":{"type":"string"},"scope":{"type":"string"},"method":{"type":"string"}},"additionalProperties":false},"adminAuth":{"type":"object","properties":{"audience":{"type":"string"},"clientId":{"type":"string"},"clientSecret":{"type":"string"},"issuer":{"type":"string"},"scope":{"type":"string"},"method":{"type":"string"}},"additionalProperties":false},"identityProviderId":{"type":"string"},"id":{"type":"string"},"description":{"type":"string"},"ledgerApi":{"type":"object","properties":{"baseUrl":{"type":"string"}},"additionalProperties":false},"name":{"type":"string"},"synchronizerId":{"type":"string"}}
   networks: []

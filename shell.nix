@@ -21,6 +21,8 @@ nixPkgs.mkShell (
       })
       gnumake
       kubeconform
+      nixfmt-rfc-style
+      nodejs_22
       unixtools.watch
     ];
   }
