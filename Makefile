@@ -1,6 +1,8 @@
 .PHONY: generate
 generate:
-	npx --yes @canton-network/wallet-gateway-remote@$(file < VERSION) --config-schema > charts/wallet-gateway/config.schema.json
+	config=$(mktemp)
+
+	jq -s '.[]' ./values.schema.base.json << '$$(npx --yes @canton-network/wallet-gateway-remote@$(file < VERSION) --config-schema)'
 
 .PHONY: package
 package:
