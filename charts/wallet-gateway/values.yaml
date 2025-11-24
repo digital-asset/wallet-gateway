@@ -12,3 +12,7 @@ store:
     database: store.sqlite
   idps: []
   networks: []
+signingStore:
+  connection:
+    type: sqlite
+    database: signing_store.sqlite
