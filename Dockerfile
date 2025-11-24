@@ -1,4 +1,4 @@
-FROM node:24.9.0-alpine3.22
+FROM node:24.11-alpine3.22
 ARG version=REQUIRED
 USER node:node
 WORKDIR /app
