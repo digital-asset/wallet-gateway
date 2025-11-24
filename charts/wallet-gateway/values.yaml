@@ -1,18 +1,20 @@
 image:
   repo: ghcr.io/digital-asset/wallet-gateway/docker
   tag: ""
-kernel:
-  id: remote-da
-  clientType: remote
-  url: ""
-  userUrl: ""
-store:
-  connection:
-    type: sqlite
-    database: store.sqlite
-  idps: []
-  networks: []
-signingStore:
-  connection:
-    type: sqlite
-    database: signing_store.sqlite
+# @schema $ref: ./config.schema.json
+config:
+  kernel:
+    id: remote-da
+    clientType: remote
+    url: ""
+    userUrl: ""
+  store:
+    connection:
+      type: sqlite
+      database: store.sqlite
+    idps: []
+    networks: []
+  signingStore:
+    connection:
+      type: sqlite
+      database: signing_store.sqlite
