@@ -1,6 +1,6 @@
 .PHONY: generate
 generate:
-	npx --yes @canton-network/wallet-gateway-remote@$(file < VERSION) --config-schema > charts/wallet-gateway/config.schema.json
+	helm schema --values charts/wallet-gateway/values.yaml -o charts/wallet-gateway/values.schema.json --no-additional-properties
 
 .PHONY: package
 package:
