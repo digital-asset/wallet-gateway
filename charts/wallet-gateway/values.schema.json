@@ -98,6 +98,7 @@
             "type": "object",
             "required": [
                 "kernel",
+                "server",
                 "store",
                 "signingStore"
             ],
@@ -106,9 +107,7 @@
                     "type": "object",
                     "required": [
                         "id",
-                        "clientType",
-                        "url",
-                        "userUrl"
+                        "clientType"
                     ],
                     "properties": {
                         "clientType": {
@@ -129,14 +128,51 @@
                         },
                         "id": {
                             "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "server": {
+                    "type": "object",
+                    "required": [
+                        "host",
+                        "port",
+                        "tls",
+                        "dappPath",
+                        "userPath",
+                        "allowedOrigins"
+                    ],
+                    "properties": {
+                        "allowedOrigins": {
+                            "default": "*",
+                            "anyOf": [
+                                {
+                                    "const": "*"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ]
                         },
-                        "url": {
-                            "type": "string",
-                            "format": "uri"
+                        "dappPath": {
+                            "default": "/api/v0/dapp",
+                            "type": "string"
                         },
-                        "userUrl": {
-                            "type": "string",
-                            "format": "uri"
+                        "host": {
+                            "type": "string"
+                        },
+                        "port": {
+                            "type": "number"
+                        },
+                        "tls": {
+                            "type": "boolean"
+                        },
+                        "userPath": {
+                            "default": "/api/v0/user",
+                            "type": "string"
                         }
                     },
                     "additionalProperties": false
