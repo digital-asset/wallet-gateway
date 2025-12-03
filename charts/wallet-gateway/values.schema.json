@@ -14,11 +14,32 @@
                         },
                         "id": {
                             "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "server": {
+                    "type": "object",
+                    "properties": {
+                        "allowedOrigins": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         },
-                        "url": {
+                        "dappPath": {
                             "type": "string"
                         },
-                        "userUrl": {
+                        "host": {
+                            "type": "string"
+                        },
+                        "port": {
+                            "type": "integer"
+                        },
+                        "tls": {
+                            "type": "boolean"
+                        },
+                        "userPath": {
                             "type": "string"
                         }
                     },

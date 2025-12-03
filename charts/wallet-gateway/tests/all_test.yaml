@@ -52,9 +52,17 @@ tests:
             {
               "kernel": {
                 "clientType": "remote",
-                "id": "remote-da",
-                "url": "",
-                "userUrl": ""
+                "id": "remote-da"
+              },
+              "server": {
+                "allowedOrigins": [
+                  "*"
+                ],
+                "dappPath": "/api/v0/dapp",
+                "host": "",
+                "port": 3030,
+                "tls": false,
+                "userPath": "/api/v0/user"
               },
               "signingStore": {
                 "connection": {

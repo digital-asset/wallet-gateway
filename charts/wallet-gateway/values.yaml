@@ -6,8 +6,13 @@ config:
   kernel:
     id: remote-da
     clientType: remote
-    url: ""
-    userUrl: ""
+  server:
+    host: ""
+    port: 3030
+    tls: false
+    dappPath: "/api/v0/dapp"
+    userPath: "/api/v0/user"
+    allowedOrigins: ["*"]
   store:
     connection:
       type: sqlite
