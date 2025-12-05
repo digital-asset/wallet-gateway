@@ -2,15 +2,21 @@
 set -euo pipefail
 
 VERSION="$1"
-IMAGE="$2"
+IMAGEID="$2"
 
 # Generate a default config file for the current version
 npx --yes @canton-network/wallet-gateway-remote@$VERSION --config-example > config.json
 
 # Start the container with the example config
-docker run -p 3030:3030 -v ./config.json:/app/config.json $IMAGE &
+trap "docker rm -f $IMAGEID" EXIT
+docker run -p 3030:3030 -v ./config.json:/app/config.json $IMAGEID &
 
 # Wait for container to be healthy
-curl --retry 10 --retry-max-time 30 http://localhost:3030/readyz
+timeout 60 bash -c '
+  until curl --fail http://localhost:3030/readyz; do
+    echo "still not ready"
+    sleep "2"
+done
+'
 
 echo "Container initialized successfully"
