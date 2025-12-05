@@ -57,36 +57,10 @@ jobs:
         with:
           build-args: version=${{ steps.version.outputs.version }}
           load: true
-          tags: ${{ env.TARGET }}-test
+          tags: ${{ env.TARGET }}
 
-      - name: Test
-        run: |
-          npx --yes @canton-network/wallet-gateway-remote@${{ steps.version.outputs.version }} --config-example > config.json
-
-          docker run -p 3030:3030 -v ./config.json:/app/config.json ${{ env.TARGET }}-test &
-
-          sleep 5
-
-          output=$(curl --silent --show-error --fail http://localhost:3030/login)
-          expected=$(cat <<EOF
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-          <meta charset="utf-8">
-          <title>Redirecting</title>
-          </head>
-          <body>
-          <pre>Redirecting to /login/</pre>
-          </body>
-          </html>
-          EOF
-          )
-
-          if [ "$output" != "$expected" ]; then
-            echo "Unexpected response from wallet-gateway:"
-            echo "$output"
-            exit 1
-          fi
+      - name: Test container initializes successfully
+        run: make test-container-init
       - name: Docker Build and Publish
         uses: docker/build-push-action@v6
         with:
