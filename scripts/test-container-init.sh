@@ -8,8 +8,8 @@ IMAGEID="$2"
 npx --yes @canton-network/wallet-gateway-remote@$VERSION --config-example > config.json
 
 # Start the container with the example config
-trap "docker rm -f $IMAGEID" EXIT
-docker run -p 3030:3030 -v ./config.json:/app/config.json $IMAGEID &
+trap "docker rm -f wallet-gateway-test" EXIT
+docker run --name wallet-gateway-test -p 3030:3030 -v ./config.json:/app/config.json $IMAGEID &
 
 # Wait for container to be healthy
 timeout 60 bash -c '
