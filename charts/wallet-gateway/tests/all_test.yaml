@@ -55,9 +55,7 @@ tests:
                 "id": "remote-da"
               },
               "server": {
-                "allowedOrigins": [
-                  "*"
-                ],
+                "allowedOrigins": "*",
                 "dappPath": "/api/v0/dapp",
                 "host": "",
                 "port": 3030,
