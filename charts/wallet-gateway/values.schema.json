@@ -22,10 +22,7 @@
                     "type": "object",
                     "properties": {
                         "allowedOrigins": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
+                            "type": "string"
                         },
                         "dappPath": {
                             "type": "string"
@@ -183,12 +180,15 @@
                             "type": "string"
                         },
                         "host": {
+                            "default": "localhost",
                             "type": "string"
                         },
                         "port": {
+                            "default": 3030,
                             "type": "number"
                         },
                         "tls": {
+                            "default": false,
                             "type": "boolean"
                         },
                         "userPath": {
