@@ -52,6 +52,8 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+        # Build first for testing (no publish): https://docs.docker.com/build/ci/github-actions/test-before-push/
       - name: Build and export to Docker
         uses: docker/build-push-action@v6
         with:
