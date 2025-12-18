@@ -20,9 +20,10 @@ spec:
       containers:
         - name: wallet-gateway
           image: "{{ .Values.image.repo }}/wallet-gateway:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
+          imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.config.server.port }}
           readinessProbe:
             httpGet:
               path: /readyz
@@ -40,7 +41,8 @@ spec:
               cpu: "500m"
           volumeMounts:
             - name: config
-              mountPath: /app
+              mountPath: /app/config.json
+              subPath: config.json
       volumes:
         - name: config
           configMap:
