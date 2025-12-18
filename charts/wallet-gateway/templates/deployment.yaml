@@ -44,4 +44,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: "{{ .Release.Name}}-wallet-gateway"
+            name: "{{ .Release.Name }}-wallet-gateway-config"

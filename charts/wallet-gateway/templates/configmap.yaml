@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Release.Name }}-config"
+  name: "{{ .Release.Name }}-wallet-gateway-config"
   namespace: "{{ .Release.Namespace }}"
 data:
   config.json: |
