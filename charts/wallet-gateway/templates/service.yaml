@@ -13,4 +13,4 @@ spec:
     - name: http
       protocol: TCP
       targetPort: http
-      port: 8080
+      port: {{ .Values.config.server.port }}
