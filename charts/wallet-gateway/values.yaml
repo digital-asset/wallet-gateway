@@ -5,11 +5,10 @@ image:
 config:
   kernel:
     id: remote-da
+    publicUrl: "https://wallet.example.com"
     clientType: remote
   server:
-    host: ""
     port: 3030
-    tls: false
     dappPath: "/api/v0/dapp"
     userPath: "/api/v0/user"
     allowedOrigins: "*"
