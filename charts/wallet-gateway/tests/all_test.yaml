@@ -52,14 +52,13 @@ tests:
             {
               "kernel": {
                 "clientType": "remote",
-                "id": "remote-da"
+                "id": "remote-da",
+                "publicUrl": "https://wallet.example.com"
               },
               "server": {
                 "allowedOrigins": "*",
                 "dappPath": "/api/v0/dapp",
-                "host": "",
                 "port": 3030,
-                "tls": false,
                 "userPath": "/api/v0/user"
               },
               "signingStore": {
