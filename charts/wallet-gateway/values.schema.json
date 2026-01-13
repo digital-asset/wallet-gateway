@@ -33,10 +33,10 @@
                         "port": {
                             "type": "integer"
                         },
-                        "userPath": {
+                        "requestSizeLimit": {
                             "type": "string"
                         },
-                        "requestSizeLimit": {
+                        "userPath": {
                             "type": "string"
                         }
                     },
@@ -193,6 +193,11 @@
                             "default": 3030,
                             "type": "number"
                         },
+                        "requestSizeLimit": {
+                            "description": "The maximum size of incoming requests. Defaults to 1mb.",
+                            "default": "1mb",
+                            "type": "string"
+                        },
                         "tls": {
                             "description": "Deprecated, this option no longer has any effect. Will be removed in a future release.",
                             "type": "boolean"
@@ -200,11 +205,6 @@
                         "userPath": {
                             "description": "The path serving the user API. Defaults /api/v0/user",
                             "default": "/api/v0/user",
-                            "type": "string"
-                        },
-                        "requestSizeLimit": {
-                            "description": "The maximum size of incoming requests. Defaults to 1mb.",
-                            "default": "1mb",
                             "type": "string"
                         }
                     },
