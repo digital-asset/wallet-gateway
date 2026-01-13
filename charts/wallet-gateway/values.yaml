@@ -12,6 +12,7 @@ config:
     dappPath: "/api/v0/dapp"
     userPath: "/api/v0/user"
     allowedOrigins: "*"
+    requestSizeLimit: '5mb'
   store:
     connection:
       type: sqlite

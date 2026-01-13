@@ -35,6 +35,9 @@
                         },
                         "userPath": {
                             "type": "string"
+                        },
+                        "requestSizeLimit": {
+                            "type": "string"
                         }
                     },
                     "additionalProperties": false
@@ -157,7 +160,8 @@
                         "port",
                         "dappPath",
                         "userPath",
-                        "allowedOrigins"
+                        "allowedOrigins",
+                        "requestSizeLimit"
                     ],
                     "properties": {
                         "allowedOrigins": {
@@ -196,6 +200,11 @@
                         "userPath": {
                             "description": "The path serving the user API. Defaults /api/v0/user",
                             "default": "/api/v0/user",
+                            "type": "string"
+                        },
+                        "requestSizeLimit": {
+                            "description": "The maximum size of incoming requests. Defaults to 1mb.",
+                            "default": "1mb",
                             "type": "string"
                         }
                     },

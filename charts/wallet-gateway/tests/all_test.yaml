@@ -59,7 +59,8 @@ tests:
                 "allowedOrigins": "*",
                 "dappPath": "/api/v0/dapp",
                 "port": 3030,
-                "userPath": "/api/v0/user"
+                "userPath": "/api/v0/user",
+                "requestSizeLimit: '5mb'
               },
               "signingStore": {
                 "connection": {
