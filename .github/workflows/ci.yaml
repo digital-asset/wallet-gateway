@@ -1,8 +1,7 @@
 name: ci
 on:
   - push
-env:
-  TARGET: ${{ github.ref == 'refs/heads/main' && 'wallet-gateway' || 'wallet-gateway-unstable' }}
+
 defaults:
   run:
     shell: nix-shell --run "exec bash -euo pipefail {0}"
@@ -35,18 +34,18 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get Version
-        id: version
-        run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -60,13 +59,21 @@ jobs:
 
       - name: Test container initializes successfully
         run: make test-container-init
+
+      - name: Docker Tags
+        id: tags
+        uses: ./.github/actions/docker-tags
+        with:
+          registry-unstable: ghcr.io/digital-asset/wallet-gateway-unstable/docker
+          registry-stable: ghcr.io/digital-asset/wallet-gateway/docker
+
       - name: Docker Build and Publish
         uses: docker/build-push-action@v6
         with:
           build-args: version=${{ steps.version.outputs.version }}
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/digital-asset/${{ env.TARGET }}/docker/wallet-gateway:v${{ steps.version.outputs.version }}
+          tags: ${{ steps.tags.outputs.tags }}
 
   helm-publish:
     runs-on: digital-asset-wallet-gateway
@@ -77,16 +84,12 @@ jobs:
       - check
       - docker-build-and-publish
     steps:
-      - uses: actions/checkout@v5
-      - name: Get Version
-        id: version
-        run: echo "version=$(<VERSION)" | tee -a "${GITHUB_OUTPUT}"
-      - name: Helm package
-        run: make package
-      - name: Archive helm package
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v6
+
+      - name: Helm Build and Publish
+        uses: ./.github/actions/helm-build-push
         with:
-          name: helm package
-          path: target/wallet-gateway-${{ steps.version.outputs.version }}.tgz
-      - name: Helm push
-        run: helm push --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} target/wallet-gateway-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/digital-asset/${{ env.TARGET }}/helm
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry-unstable: oci://ghcr.io/digital-asset/wallet-gateway-unstable/helm
+          registry-stable: oci://ghcr.io/digital-asset/wallet-gateway/helm
