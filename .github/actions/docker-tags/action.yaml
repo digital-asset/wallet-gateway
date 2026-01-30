@@ -1,0 +1,52 @@
+# TODO - move this to a shared repo
+# https://docs.github.com/en/actions/how-tos/reuse-automations/share-across-private-repositories
+
+name: Docker Tags
+description: Calculates the docker tags
+
+inputs:
+  name:
+    description: The docker image name
+    default: ${{ github.event.repository.name }}
+    required: false
+  registry-unstable:
+    description: The unstable registry path
+    default: europe-docker.pkg.dev/da-images/public-unstable/docker
+    required: false
+  registry-stable:
+    description: The stable registry path
+    default: europe-docker.pkg.dev/da-images/public/docker
+    required: false
+  release-branches:
+    description: List of branche names considered for stable releases (space separated)
+    default: main master release- release/
+    required: false
+
+outputs:
+  tags-unstable:
+    description: The unstable docker tags
+    value: ${{ steps.calc.outputs.tags-unstable }}
+  tags-stable:
+    description: The stable docker tags. NOTE, this is empty unless the current branch is one of the release-branches AND the stable docker image doesn't already exist in in the stable registry.
+    value: ${{ steps.calc.outputs.tags-unstable }}
+  tags:
+    description: A combination of both unstable and stable tags
+    value: ${{ steps.calc.outputs.tags }}
+
+runs:
+  using: composite
+  steps:
+    - name: Versions
+      id: versions
+      uses: ./.github/actions/versions
+    - name: Calculate Tags
+      env:
+        NAME: ${{ inputs.name }}
+        REGISTRY_UNSTABLE: ${{ inputs.registry-unstable }}
+        REGISTRY_STABLE: ${{ inputs.registry-stable }}
+        RELEASE_BRANCHES: ${{ inputs.release-branches }}
+        VERSIONS_UNSTABLE: ${{ steps.versions.outputs.unstable }}
+        VERSIONS_STABLE: ${{ steps.versions.outputs.stable }}
+      shell: bash
+      id: calc
+      run: ${{ github.action_path }}/docker-tags.sh

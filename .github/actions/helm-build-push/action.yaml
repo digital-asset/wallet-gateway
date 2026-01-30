@@ -1,0 +1,68 @@
+# TODO - move this to a shared repo
+# https://docs.github.com/en/actions/how-tos/reuse-automations/share-across-private-repositories
+
+name: Helm Build and Push
+description: Builds and pushes Helm Charts
+
+inputs:
+  chart:
+    description: The path to the chart
+    default: charts/${{ github.event.repository.name }}
+    required: true
+  registry-unstable:
+    description: The unstable registry path
+    default: europe-docker.pkg.dev/da-images/public-unstable/charts
+    required: true
+  registry-stable:
+    description: The stable registry path
+    default: europe-docker.pkg.dev/da-images/public/charts
+    required: true
+  release-branches:
+    description: List of branche names considered for stable releases (space separated)
+    default: main master release-* release/*
+    required: true
+  username:
+    description: The registries' username
+    required: true
+  password:
+    description: The registries' password
+    required: true
+
+outputs:
+  unstable-package:
+    description: The path to the built unstable package
+    value: ${{ steps.build-push.outputs.unstable-package }}
+  stable-package:
+    description: The path to the built stable package
+    value: ${{ steps.build-push.outputs.stable-package }}
+
+runs:
+  using: composite
+  steps:
+    - name: Versions
+      id: versions
+      uses: ./.github/actions/versions
+    - name: Helm Build and Push
+      id: build-push
+      env:
+        CHART: ${{ inputs.chart }}
+        REGISTRY_UNSTABLE: ${{ inputs.registry-unstable }}
+        REGISTRY_STABLE: ${{ inputs.registry-stable }}
+        RELEASE_BRANCHES: ${{ inputs.release-branches }}
+        VERSIONS_UNSTABLE: ${{ steps.versions.outputs.unstable }}
+        VERSIONS_STABLE: ${{ steps.versions.outputs.stable }}
+        USERNAME: ${{ inputs.username }}
+        PASSWORD: ${{ inputs.password }}
+      shell: nix-shell ${{ github.action_path }}/shell.nix --run "exec bash -euo pipefail {0}"
+      run: ${{ github.action_path }}/helm-build-push.sh
+    - name: Upload Unstable Chart
+      uses: actions/upload-artifact@v4
+      with:
+        name: unstable-chart
+        path: ${{ steps.build-push.outputs.unstable-package }}
+    - name: Upload Stable Chart
+      uses: actions/upload-artifact@v4
+      if: ${{ steps.build-push.outputs.stable-package != '' }}
+      with:
+        name: stable-chart
+        path: ${{ steps.build-push.outputs.stable-package }}

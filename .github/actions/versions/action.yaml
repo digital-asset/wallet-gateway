@@ -1,0 +1,21 @@
+# TODO - move this to a shared repo
+# https://docs.github.com/en/actions/how-tos/reuse-automations/share-across-private-repositories
+
+name: Versions
+description: Calculates the current stable and unstable versions
+
+outputs:
+  unstable:
+    description: The unstable version
+    value: ${{ steps.calc.outputs.unstable }}
+  stable:
+    description: The stable version
+    value: ${{ steps.calc.outputs.stable }}
+
+runs:
+  using: composite
+  steps:
+    - name: Calculate Versions
+      shell: bash
+      id: calc
+      run: ${{ github.action_path }}/versions.sh
