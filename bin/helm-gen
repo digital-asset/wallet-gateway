@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+repo_root="${script_dir}/.."
+version="$(<"${repo_root}/VERSION")"
+
+chart="${1:-}"
+
+if [ -z "${chart}" ]; then
+    echo "missing chart argument"
+    exit 1
+fi
+
+set -x
+
+if [ "${chart}" == 'wallet-gateway' ]; then
+    npx --yes "@canton-network/wallet-gateway-remote@${version}" --config-schema >"${repo_root}/charts/wallet-gateway/config.schema.json"
+fi
+
+helm schema \
+    --bundle \
+    --no-additional-properties \
+    --values "${repo_root}/charts/${chart}/values.yaml" \
+    -o "${repo_root}/charts/${chart}/values.schema.json"
