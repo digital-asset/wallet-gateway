@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name}}-splice-portfolio"
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app: "{{ .Release.Name}}-splice-portfolio"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name}}-splice-portfolio"
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name}}-splice-portfolio"
+    spec:
+      containers:
+        - name: splice-portfolio
+          image: "{{ .Values.image.repo }}/splice-portfolio:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"

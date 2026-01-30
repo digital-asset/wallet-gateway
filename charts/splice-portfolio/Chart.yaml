@@ -1,0 +1,8 @@
+apiVersion: v2
+name: splice-portfolio
+description: Example portfolio
+type: application
+# version set at package time
+version: 0.0.0
+sources:
+  - https://github.com/hyperledger-labs/splice-wallet-kernel
