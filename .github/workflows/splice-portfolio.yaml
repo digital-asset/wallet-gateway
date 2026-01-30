@@ -50,3 +50,22 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.tags.outputs.tags }}
+
+  helm-publish:
+    runs-on: digital-asset-wallet-gateway
+    permissions:
+      contents: read
+      packages: write
+    needs:
+      - docker-build-and-publish
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Helm Build and Publish
+        uses: ./.github/actions/helm-build-push
+        with:
+          chart: charts/splice-portfolio
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry-unstable: ghcr.io/digital-asset/splice-portfolio-unstable/helm
+          registry-stable: ghcr.io/digital-asset/splice-portfolio/helm
