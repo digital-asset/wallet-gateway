@@ -9,30 +9,19 @@ defaults:
 jobs:
   check:
     runs-on: digital-asset-wallet-gateway
-    permissions:
-      contents: read
-      issues: read
-      checks: write
     steps:
-      - uses: actions/checkout@v5
-      - name: Check schema
-        run: |
-          make generate
-          out="$(git status --porcelain)"
-          if [ ! -z "${out}" ]; then
-            echo "Helm schema needs to be re-generated, please run 'make generate'"
-            echo "${out}"
-            exit 1
-          fi
-          echo "No changes"
-      - name: Helm unittests
-        run: make test
+      - uses: actions/checkout@v6
+      - run: helm unittest charts/wallet-gateway
+      - run: ./bin/helm-gen wallet-gateway
+      - run: ./.github/scripts/git-dirty-check
 
   docker-build-and-publish:
     runs-on: digital-asset-wallet-gateway
     permissions:
       contents: read
       packages: write
+    needs:
+      - check
     steps:
       - uses: actions/checkout@v6
 
@@ -65,7 +54,7 @@ jobs:
           load: true
 
       - name: Test container initializes successfully
-        run: ./scripts/test-container-init.sh ${{ steps.versions.outputs.stable }} ${{ steps.docker-export.outputs.imageid }}
+        run: ./bin/test-container-init.sh ${{ steps.versions.outputs.stable }} ${{ steps.docker-export.outputs.imageid }}
 
       # Setup buildx for multi-platform
       - name: Set up QEMU
@@ -91,7 +80,6 @@ jobs:
       packages: write
     needs:
       - check
-      - docker-build-and-publish
     steps:
       - uses: actions/checkout@v6
 

@@ -7,11 +7,21 @@ defaults:
     shell: nix-shell --run "exec bash -euo pipefail {0}"
 
 jobs:
+  check:
+    runs-on: digital-asset-wallet-gateway
+    steps:
+      - uses: actions/checkout@v6
+      - run: helm unittest charts/splice-portfolio
+      - run: ./bin/helm-gen splice-portfolio
+      - run: ./.github/scripts/git-dirty-check
+
   docker-build-and-publish:
     runs-on: digital-asset-wallet-gateway
     permissions:
       contents: read
       packages: write
+    needs:
+      - check
     steps:
       - uses: actions/checkout@v6
 
@@ -57,7 +67,7 @@ jobs:
       contents: read
       packages: write
     needs:
-      - docker-build-and-publish
+      - check
     steps:
       - uses: actions/checkout@v6
 

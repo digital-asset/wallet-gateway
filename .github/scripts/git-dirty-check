@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+out="$(git status --porcelain)"
+if [ ! -z "${out}" ]; then
+    echo "Git is dirty"
+    echo "${out}"
+    exit 1
+fi
