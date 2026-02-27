@@ -4,6 +4,11 @@
 name: Versions
 description: Calculates the current stable and unstable versions
 
+inputs:
+  name:
+    description: The app to calculate versions for (e.g. wallet-gateway, splice-portfolio)
+    required: true
+
 outputs:
   unstable:
     description: The unstable version
@@ -18,4 +23,4 @@ runs:
     - name: Calculate Versions
       shell: bash
       id: calc
-      run: ${{ github.action_path }}/versions.sh
+      run: ${{ github.action_path }}/versions.sh ${{ inputs.name }}

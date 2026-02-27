@@ -1,10 +1,17 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-version_file="$(<VERSION)"
+name="$1"
+
+if [ -z "${name}" ]; then
+    echo "missing name argument"
+    exit 1
+fi
+
+version_file="$(<"apps/${name}/VERSION")"
 
 # Bump the patch version
-minor_bump="$(awk -F. '{s=$3; sub(/^[0-9]+/, "", s); print $1"."$2"."($3+1)s}' VERSION)"
+minor_bump="$(awk -F. '{s=$3; sub(/^[0-9]+/, "", s); print $1"."$2"."($3+1)s}' "apps/${name}/VERSION")"
 
 # Get the commit date
 commit_date="$(git log -n1 --format=%cd --date=format:%Y%m%d)"

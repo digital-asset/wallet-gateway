@@ -36,6 +36,8 @@ jobs:
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
+        with:
+          name: splice-portfolio
       - name: Docker Tags
         id: tags
         uses: ./.github/actions/docker-tags
@@ -54,9 +56,9 @@ jobs:
       - name: Docker Build and Publish
         uses: docker/build-push-action@v6
         with:
-          file: ./Dockerfile.splice-portfolio
+          file: ./apps/splice-portfolio/Dockerfile
           # Always use the stable version to pull down the npm package
-          build-args: version=${{ steps.version.outputs.version }}
+          build-args: version=${{ steps.versions.outputs.stable }}
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.tags.outputs.tags }}
