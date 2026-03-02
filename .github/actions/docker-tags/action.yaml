@@ -7,8 +7,7 @@ description: Calculates the docker tags
 inputs:
   name:
     description: The docker image name
-    default: ${{ github.event.repository.name }}
-    required: false
+    required: true
   registry-unstable:
     description: The unstable registry path
     default: europe-docker.pkg.dev/da-images/public-unstable/docker
@@ -39,6 +38,8 @@ runs:
     - name: Versions
       id: versions
       uses: ./.github/actions/versions
+      with:
+        name: ${{ inputs.name }}
     - name: Calculate Tags
       env:
         NAME: ${{ inputs.name }}

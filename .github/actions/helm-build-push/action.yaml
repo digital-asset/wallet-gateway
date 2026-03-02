@@ -5,9 +5,9 @@ name: Helm Build and Push
 description: Builds and pushes Helm Charts
 
 inputs:
-  chart:
-    description: The path to the chart
-    default: charts/${{ github.event.repository.name }}
+  name:
+    description: The name of the chart
+    default: ${{ github.event.repository.name }}
     required: true
   registry-unstable:
     description: The unstable registry path
@@ -42,10 +42,12 @@ runs:
     - name: Versions
       id: versions
       uses: ./.github/actions/versions
+      with:
+        name: ${{ inputs.name }}
     - name: Helm Build and Push
       id: build-push
       env:
-        CHART: ${{ inputs.chart }}
+        CHART: charts/${{ inputs.name }}
         REGISTRY_UNSTABLE: ${{ inputs.registry-unstable }}
         REGISTRY_STABLE: ${{ inputs.registry-stable }}
         RELEASE_BRANCHES: ${{ inputs.release-branches }}
