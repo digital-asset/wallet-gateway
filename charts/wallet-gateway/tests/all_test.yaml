@@ -50,6 +50,10 @@ tests:
           path: data["config.json"]
           value: |
             {
+              "bootstrap": {
+                "idps": [],
+                "networks": []
+              },
               "kernel": {
                 "clientType": "remote",
                 "id": "remote-da",
@@ -73,8 +77,6 @@ tests:
                 "connection": {
                   "database": "store.sqlite",
                   "type": "sqlite"
-                },
-                "idps": [],
-                "networks": []
+                }
               }
             }
