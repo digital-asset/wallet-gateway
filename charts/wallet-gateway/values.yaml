@@ -18,9 +18,10 @@ config:
     connection:
       type: sqlite
       database: store.sqlite
-    idps: []
-    networks: []
   signingStore:
     connection:
       type: sqlite
       database: signing_store.sqlite
+  bootstrap:
+    idps: []
+    networks: []
