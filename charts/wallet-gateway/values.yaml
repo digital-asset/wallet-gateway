@@ -1,6 +1,27 @@
 image:
   repo: ghcr.io/digital-asset/wallet-gateway/docker
   tag: ""
+
+# @schema
+# additionalProperties: true
+# @schema
+envFromSecrets:
+  FIREBLOCKS_API_KEY:
+    secretName: "fireblocks"
+    secretKey: "api-key"
+  FIREBLOCKS_SECRET:
+    secretName: "fireblocks"
+    secretKey: "secret"
+  BLOCKDAEMON_API_URL:
+    secretName: "blockdaemon"
+    secretKey: "api-url"
+  BLOCKDAEMON_API_KEY:
+    secretName: "blockdaemon"
+    secretKey: "api-key"
+  OAUTH2_DEVNET_CLIENT_SECRET:
+    secretName: "network-devnet-oauth2"
+    secretKey: "client-secret"
+
 # @schema $ref: ./config.schema.json
 config:
   kernel:
@@ -23,5 +44,27 @@ config:
       type: sqlite
       database: signing_store.sqlite
   bootstrap:
-    idps: []
-    networks: []
+    idps:
+      - id: "idp-devnet"
+        type: "oauth"
+        issuer: "<oauth_issuer>"
+        # url to .well-known/openid-configuration document
+        configUrl: "<oauth_well-known_url>"
+    networks:
+      - id: "devnet"
+        name: "Canton DevNet (example)"
+        description: "Connect to Canton DevNet"
+        identityProviderId: "idp-devnet"
+        ledgerApi:
+          baseUrl: "https://devnet.example.com"
+        auth:
+          method: "authorization_code"
+          clientId: "<oauth_user>"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<oauth_audience>"
+        adminAuth:
+          method: "client_credentials"
+          scope: "daml_ledger_api"
+          audience: "<oauth_audience>"
+          clientId: "<oauth_admin_client_id>"
+          clientSecretEnv: "OAUTH2_DEVNET_CLIENT_SECRET"

@@ -21,6 +21,32 @@ spec:
         - name: wallet-gateway
           image: "{{ .Values.image.repo }}/wallet-gateway:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
           imagePullPolicy: Always
+          env:
+            {{- /* FIREBLOCKS env vars */ -}}
+            {{- if hasKey .Values.envFromSecrets "FIREBLOCKS_API_KEY" }}
+              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "FIREBLOCKS_API_KEY") | nindent 12 }}
+            {{- end }}
+            {{- if hasKey .Values.envFromSecrets "FIREBLOCKS_SECRET" }}
+              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "FIREBLOCKS_SECRET") | nindent 12 }}
+            {{- end }}
+
+            {{- /* BLOCKDAEMON env vars */ -}}
+            {{- if hasKey .Values.envFromSecrets "BLOCKDAEMON_API_URL" }}
+              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "BLOCKDAEMON_API_URL") | nindent 12 }}
+            {{- end }}
+            {{- if hasKey .Values.envFromSecrets "BLOCKDAEMON_API_KEY" }}
+              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "BLOCKDAEMON_API_KEY") | nindent 12 }}
+            {{- end }}
+
+            {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
+            {{- range .Values.config.bootstrap.networks }}
+              {{- if and .auth .auth.clientSecretEnv }}
+                {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .auth.clientSecretEnv) | nindent 12 }}
+              {{- end }}
+              {{- if and .adminAuth .adminAuth.clientSecretEnv }}
+                {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .adminAuth.clientSecretEnv) | nindent 12 }}
+              {{- end }}
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.config.server.port }}

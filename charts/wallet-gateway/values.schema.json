@@ -10,10 +10,94 @@
                     "type": "object",
                     "properties": {
                         "idps": {
-                            "type": "array"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "configUrl": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "issuer": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
                         },
                         "networks": {
-                            "type": "array"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "adminAuth": {
+                                        "type": "object",
+                                        "properties": {
+                                            "audience": {
+                                                "type": "string"
+                                            },
+                                            "clientId": {
+                                                "type": "string"
+                                            },
+                                            "clientSecretEnv": {
+                                                "type": "string"
+                                            },
+                                            "method": {
+                                                "type": "string"
+                                            },
+                                            "scope": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "auth": {
+                                        "type": "object",
+                                        "properties": {
+                                            "audience": {
+                                                "type": "string"
+                                            },
+                                            "clientId": {
+                                                "type": "string"
+                                            },
+                                            "method": {
+                                                "type": "string"
+                                            },
+                                            "scope": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "identityProviderId": {
+                                        "type": "string"
+                                    },
+                                    "ledgerApi": {
+                                        "type": "object",
+                                        "properties": {
+                                            "baseUrl": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
                         }
                     },
                     "additionalProperties": false
@@ -89,6 +173,72 @@
                                 }
                             },
                             "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "envFromSecrets": {
+            "type": "object",
+            "properties": {
+                "BLOCKDAEMON_API_KEY": {
+                    "type": "object",
+                    "properties": {
+                        "secretKey": {
+                            "type": "string"
+                        },
+                        "secretName": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "BLOCKDAEMON_API_URL": {
+                    "type": "object",
+                    "properties": {
+                        "secretKey": {
+                            "type": "string"
+                        },
+                        "secretName": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "FIREBLOCKS_API_KEY": {
+                    "type": "object",
+                    "properties": {
+                        "secretKey": {
+                            "type": "string"
+                        },
+                        "secretName": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "FIREBLOCKS_SECRET": {
+                    "type": "object",
+                    "properties": {
+                        "secretKey": {
+                            "type": "string"
+                        },
+                        "secretName": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "OAUTH2_DEVNET_CLIENT_SECRET": {
+                    "type": "object",
+                    "properties": {
+                        "secretKey": {
+                            "type": "string"
+                        },
+                        "secretName": {
+                            "type": "string"
                         }
                     },
                     "additionalProperties": false
