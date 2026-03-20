@@ -51,8 +51,38 @@ tests:
           value: |
             {
               "bootstrap": {
-                "idps": [],
-                "networks": []
+                "idps": [
+                  {
+                    "configUrl": "\u003coauth_well-known_url\u003e",
+                    "id": "idp-devnet",
+                    "issuer": "\u003coauth_issuer\u003e",
+                    "type": "oauth"
+                  }
+                ],
+                "networks": [
+                  {
+                    "adminAuth": {
+                      "audience": "\u003coauth_audience\u003e",
+                      "clientId": "\u003coauth_admin_client_id\u003e",
+                      "clientSecretEnv": "OAUTH2_DEVNET_CLIENT_SECRET",
+                      "method": "client_credentials",
+                      "scope": "daml_ledger_api"
+                    },
+                    "auth": {
+                      "audience": "\u003coauth_audience\u003e",
+                      "clientId": "\u003coauth_user\u003e",
+                      "method": "authorization_code",
+                      "scope": "openid daml_ledger_api offline_access"
+                    },
+                    "description": "Connect to Canton DevNet",
+                    "id": "devnet",
+                    "identityProviderId": "idp-devnet",
+                    "ledgerApi": {
+                      "baseUrl": "https://devnet.example.com"
+                    },
+                    "name": "Canton DevNet (example)"
+                  }
+                ]
               },
               "kernel": {
                 "clientType": "remote",

@@ -23,30 +23,51 @@ spec:
           imagePullPolicy: Always
           env:
             {{- /* FIREBLOCKS env vars */ -}}
-            {{- if hasKey .Values.envFromSecrets "FIREBLOCKS_API_KEY" }}
-              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "FIREBLOCKS_API_KEY") | nindent 12 }}
+            {{- if .Values.signing.fireblocks.apiKeyRef }}
+            - name: FIREBLOCKS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.fireblocks.apiKeyRef | nindent 18 }}
             {{- end }}
-            {{- if hasKey .Values.envFromSecrets "FIREBLOCKS_SECRET" }}
-              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "FIREBLOCKS_SECRET") | nindent 12 }}
+
+            {{- if .Values.signing.fireblocks.secretRef }}
+            - name: FIREBLOCKS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.fireblocks.secretRef | nindent 18 }}
             {{- end }}
 
             {{- /* BLOCKDAEMON env vars */ -}}
-            {{- if hasKey .Values.envFromSecrets "BLOCKDAEMON_API_URL" }}
-              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "BLOCKDAEMON_API_URL") | nindent 12 }}
+            {{- if .Values.signing.blockdaemon.apiUrl }}
+            - name: BLOCKDAEMON_API_URL
+              value: {{ .Values.signing.blockdaemon.apiUrl | quote }}
             {{- end }}
-            {{- if hasKey .Values.envFromSecrets "BLOCKDAEMON_API_KEY" }}
-              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" "BLOCKDAEMON_API_KEY") | nindent 12 }}
+
+            {{- if .Values.signing.blockdaemon.apiKeyRef }}
+            - name: BLOCKDAEMON_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.blockdaemon.apiKeyRef | nindent 18 }}
             {{- end }}
 
             {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
             {{- range .Values.config.bootstrap.networks }}
-              {{- if and .auth .auth.clientSecretEnv }}
-                {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .auth.clientSecretEnv) | nindent 12 }}
+                {{- $networks := list .auth .adminAuth }}
+                {{- range $networks }}
+                  {{- if .clientSecret }}
+                    {{- $envName := .clientSecret }}
+                    {{- $mapping := index $.Values.oauthSecrets $envName }}
+                    {{- /* ONLY render the '- name' if the mapping actually has data */ -}}
+                    {{- if and $mapping $mapping.name $mapping.key }}
+              - name: {{ $envName }}
+                valueFrom:
+                  secretKeyRef:
+                    {{- include "wallet-gateway.render.secretRef" (dict "ref" $mapping "indent" 8) }}
+                    {{- end }}
+                  {{- end }}
+                {{- end }}
               {{- end }}
-              {{- if and .adminAuth .adminAuth.clientSecretEnv }}
-                {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .adminAuth.clientSecretEnv) | nindent 12 }}
-              {{- end }}
-            {{- end }}
+
           ports:
             - name: http
               containerPort: {{ .Values.config.server.port }}

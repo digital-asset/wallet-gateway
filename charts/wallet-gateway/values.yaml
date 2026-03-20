@@ -2,25 +2,27 @@ image:
   repo: ghcr.io/digital-asset/wallet-gateway/docker
   tag: ""
 
-# @schema
-# additionalProperties: true
-# @schema
-envFromSecrets:
-  FIREBLOCKS_API_KEY:
-    secretName: "fireblocks"
-    secretKey: "api-key"
-  FIREBLOCKS_SECRET:
-    secretName: "fireblocks"
-    secretKey: "secret"
-  BLOCKDAEMON_API_URL:
-    secretName: "blockdaemon"
-    secretKey: "api-url"
-  BLOCKDAEMON_API_KEY:
-    secretName: "blockdaemon"
-    secretKey: "api-key"
+signing:
+  fireblocks:
+    apiKeyRef:
+      name: "fireblocks"
+      key: "api-key"
+    secretRef:
+      name: "fireblocks"
+      key: "secret"
+  blockdaemon:
+    apiUrl: "http://localhost:5080/api/cwp/canton"
+    apiKeyRef:
+      name: "blockdaemon-api-key"
+      key: "api-key"
+
+# @schema additionalProperties: true
+oauthSecrets:
+  # map a kubernetes secret to a Wallet Gateway network auth config
   OAUTH2_DEVNET_CLIENT_SECRET:
-    secretName: "network-devnet-oauth2"
-    secretKey: "client-secret"
+    secretRef:
+      name: ""
+      key: ""
 
 # @schema $ref: ./config.schema.json
 config:
@@ -67,4 +69,5 @@ config:
           scope: "daml_ledger_api"
           audience: "<oauth_audience>"
           clientId: "<oauth_admin_client_id>"
+          # should correlate to a secret provided in oauthSecrets
           clientSecretEnv: "OAUTH2_DEVNET_CLIENT_SECRET"

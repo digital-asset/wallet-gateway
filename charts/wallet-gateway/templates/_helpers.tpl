@@ -5,14 +5,14 @@ Usage: {{ include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .au
 {{- define "wallet-gateway.render.secretEnv" -}}
 {{- $root := .root -}}
 {{- $envName := .envName -}}
-{{- if hasKey $root.Values.envFromSecrets $envName -}}
-{{- $mapping := index $root.Values.envFromSecrets $envName -}}
+{{- if hasKey $root.Values.oauthSecrets $envName -}}
+{{- $mapping := index $root.Values.oauthSecrets $envName -}}
 - name: {{ $envName }}
   valueFrom:
     secretKeyRef:
       name: {{ $mapping.secretName }}
       key: {{ $mapping.secretKey }}
 {{- else -}}
-{{- fail (printf "Environment variable '%s' is requested in config but not defined in envFromSecrets" $envName) -}}
+{{- fail (printf "Environment variable '%s' is requested in config but not defined in oauthSecrets" $envName) -}}
 {{- end -}}
 {{- end -}}
