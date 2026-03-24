@@ -53,7 +53,7 @@ tests:
               "bootstrap": {
                 "idps": [
                   {
-                    "configUrl": "\u003coauth_well-known_url\u003e",
+                    "configUrl": "http://oauth.example.com/.well-known/openid-configuration",
                     "id": "idp-devnet",
                     "issuer": "\u003coauth_issuer\u003e",
                     "type": "oauth"

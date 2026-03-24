@@ -247,36 +247,6 @@
                         }
                     },
                     "additionalProperties": false
-                },
-                "fireblocks": {
-                    "type": "object",
-                    "properties": {
-                        "apiKeyRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        },
-                        "secretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
                 }
             },
             "additionalProperties": false

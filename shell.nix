@@ -20,7 +20,9 @@ nixPkgs.mkShell (
         ];
       })
       gnumake
+      k3d
       kubeconform
+      kubectl
       nixfmt-rfc-style
       nodejs_22
       unixtools.watch

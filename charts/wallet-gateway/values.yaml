@@ -3,18 +3,11 @@ image:
   tag: ""
 
 signing:
-  fireblocks:
-    apiKeyRef:
-      name: "fireblocks"
-      key: "api-key"
-    secretRef:
-      name: "fireblocks"
-      key: "secret"
   blockdaemon:
     apiUrl: "http://localhost:5080/api/cwp/canton"
     apiKeyRef:
-      name: "blockdaemon-api-key"
-      key: "api-key"
+      name: ""
+      key: ""
 
 # @schema additionalProperties: true
 oauthSecrets:
@@ -51,7 +44,7 @@ config:
         type: "oauth"
         issuer: "<oauth_issuer>"
         # url to .well-known/openid-configuration document
-        configUrl: "<oauth_well-known_url>"
+        configUrl: "http://oauth.example.com/.well-known/openid-configuration"
     networks:
       - id: "devnet"
         name: "Canton DevNet (example)"

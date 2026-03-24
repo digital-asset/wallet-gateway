@@ -23,14 +23,12 @@ spec:
           imagePullPolicy: Always
           env:
             {{- /* FIREBLOCKS env vars */ -}}
-            {{- if .Values.signing.fireblocks.apiKeyRef }}
+            {{- if .Values.signing.fireblocks }}
             - name: FIREBLOCKS_API_KEY
               valueFrom:
                 secretKeyRef:
                   {{- toYaml .Values.signing.fireblocks.apiKeyRef | nindent 18 }}
-            {{- end }}
 
-            {{- if .Values.signing.fireblocks.secretRef }}
             - name: FIREBLOCKS_SECRET
               valueFrom:
                 secretKeyRef:
@@ -38,12 +36,10 @@ spec:
             {{- end }}
 
             {{- /* BLOCKDAEMON env vars */ -}}
-            {{- if .Values.signing.blockdaemon.apiUrl }}
+            {{- if .Values.signing.blockdaemon }}
             - name: BLOCKDAEMON_API_URL
               value: {{ .Values.signing.blockdaemon.apiUrl | quote }}
-            {{- end }}
 
-            {{- if .Values.signing.blockdaemon.apiKeyRef }}
             - name: BLOCKDAEMON_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -52,21 +48,15 @@ spec:
 
             {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
             {{- range .Values.config.bootstrap.networks }}
-                {{- $networks := list .auth .adminAuth }}
-                {{- range $networks }}
-                  {{- if .clientSecret }}
-                    {{- $envName := .clientSecret }}
-                    {{- $mapping := index $.Values.oauthSecrets $envName }}
-                    {{- /* ONLY render the '- name' if the mapping actually has data */ -}}
-                    {{- if and $mapping $mapping.name $mapping.key }}
-              - name: {{ $envName }}
-                valueFrom:
-                  secretKeyRef:
-                    {{- include "wallet-gateway.render.secretRef" (dict "ref" $mapping "indent" 8) }}
-                    {{- end }}
-                  {{- end }}
+              {{- /* Create a list of the two auth blocks to check both */ -}}
+              {{- $authBlocks := list .auth .adminAuth -}}
+              {{- range $authBlocks }}
+                {{- if .clientSecretEnv }}
+                  {{- /* Pass 'root' as $ (global context) and the name of the env var */ -}}
+                  {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .clientSecretEnv) | nindent 12 }}
                 {{- end }}
               {{- end }}
+            {{- end }}
 
           ports:
             - name: http
