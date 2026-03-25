@@ -29,11 +29,35 @@ tests:
           count: 1
 
   - it: should render a deployment
+    set:
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.name: "my-secret"
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.key: "my-key"
     templates:
       - deployment.yaml
     asserts:
       - isKind:
           of: Deployment
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BLOCKDAEMON_API_URL
+            value: http://localhost:5080/api/cwp/canton
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BLOCKDAEMON_API_KEY
+            valueFrom:
+              secretKeyRef:
+                key: ""
+                name: ""
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: OAUTH2_DEVNET_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "my-secret"
+                key: "my-key"
   - it: should render a service
     templates:
       - service.yaml
