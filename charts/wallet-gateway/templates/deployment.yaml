@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: Always
           env:
             {{- /* FIREBLOCKS env vars */ -}}
-            {{- if .Values.signing.fireblocks }}
+            {{- if and .Values.signing .Values.signing.fireblocks }}
             - name: FIREBLOCKS_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -36,7 +36,7 @@ spec:
             {{- end }}
 
             {{- /* BLOCKDAEMON env vars */ -}}
-            {{- if .Values.signing.blockdaemon }}
+            {{- if and .Values.signing .Values.signing.blockdaemon }}
             - name: BLOCKDAEMON_API_URL
               value: {{ .Values.signing.blockdaemon.apiUrl | quote }}
 
