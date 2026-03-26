@@ -14,12 +14,23 @@ set -x
 
 if [ "${chart}" == 'wallet-gateway' ]; then
     version="$(<"${repo_root}/apps/wallet-gateway/VERSION")"
-
     npx --yes "@canton-network/wallet-gateway-remote@${version}" --config-schema >"${repo_root}/charts/wallet-gateway/config.schema.json"
 fi
 
+schema_file="${repo_root}/charts/${chart}/values.schema.json"
+
+# 1. Run the plugin normally. It will successfully bundle the external schema into $defs,
+#    but it will also generate unwanted inferred properties on the 'config' key.
 helm schema \
     --bundle \
     --no-additional-properties \
     --values "${repo_root}/charts/${chart}/values.yaml" \
-    -o "${repo_root}/charts/${chart}/values.schema.json"
+    -o "$schema_file"
+
+# 2. Need to post-process the WG helm chart to correctly use the original JSON Schema for `config`.
+#    Otherwise, the schema plugin overwrites it.
+if [ "${chart}" == 'wallet-gateway' ]; then
+    # This leaves ONLY the {"$ref": "#/$defs/config.schema.json"} inside the config block
+    jq 'del(.properties.config.properties, .properties.config.type)' "$schema_file" > "${schema_file}.tmp"
+    mv "${schema_file}.tmp" "$schema_file"
+fi
