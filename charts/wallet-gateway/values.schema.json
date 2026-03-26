@@ -728,7 +728,9 @@
                                         "type": "string"
                                     },
                                     "synchronizerId": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "pattern": "::",
+                                        "minLength": 10
                                     }
                                 },
                                 "additionalProperties": false
