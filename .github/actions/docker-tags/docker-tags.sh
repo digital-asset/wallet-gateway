@@ -11,7 +11,7 @@ function required() {
 
 # Outputs the full tag, registry/name:tag
 function full-tag() {
-  printf '%s/%s:%s' "$1" "${NAME}" "$2"
+  printf '%s/%s:v%s' "$1" "${NAME}" "$2"
 }
 
 # Sanitizes a tag
