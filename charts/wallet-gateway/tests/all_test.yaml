@@ -81,6 +81,11 @@ tests:
                     "id": "idp-devnet",
                     "issuer": "\u003coauth_issuer\u003e",
                     "type": "oauth"
+                  },
+                  {
+                    "id": "idp-local",
+                    "issuer": "unsafe-auth",
+                    "type": "self_signed"
                   }
                 ],
                 "networks": [
@@ -105,6 +110,31 @@ tests:
                       "baseUrl": "https://devnet.example.com"
                     },
                     "name": "Canton DevNet (example)"
+                  },
+                  {
+                    "adminAuth": {
+                      "audience": "\u003clocal_audience\u003e",
+                      "clientId": "admin",
+                      "clientSecret": "unsafe",
+                      "issuer": "unsafe-auth",
+                      "method": "self_signed",
+                      "scope": "openid daml_ledger_api offline_access"
+                    },
+                    "auth": {
+                      "audience": "\u003clocal_audience\u003e",
+                      "clientId": "\u003clocal_user\u003e",
+                      "clientSecret": "unsafe",
+                      "issuer": "unsafe-auth",
+                      "method": "self_signed",
+                      "scope": "openid daml_ledger_api offline_access"
+                    },
+                    "description": "Connect to a local self-signed network",
+                    "id": "local",
+                    "identityProviderId": "idp-local",
+                    "ledgerApi": {
+                      "baseUrl": "http://localhost:3975"
+                    },
+                    "name": "Local (self-signed example)"
                   }
                 ]
               },

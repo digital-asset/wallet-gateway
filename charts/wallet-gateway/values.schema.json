@@ -1,989 +1,815 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "properties": {
-        "config": {
-            "$ref": "config.schema.json",
-            "type": "object",
-            "properties": {
-                "bootstrap": {
-                    "type": "object",
-                    "properties": {
-                        "idps": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "configUrl": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "issuer": {
-                                        "type": "string"
-                                    },
-                                    "type": {
-                                        "type": "string"
-                                    }
-                                },
-                                "additionalProperties": false
-                            }
-                        },
-                        "networks": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "adminAuth": {
-                                        "type": "object",
-                                        "properties": {
-                                            "audience": {
-                                                "type": "string"
-                                            },
-                                            "clientId": {
-                                                "type": "string"
-                                            },
-                                            "clientSecretEnv": {
-                                                "type": "string"
-                                            },
-                                            "method": {
-                                                "type": "string"
-                                            },
-                                            "scope": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
-                                    "auth": {
-                                        "type": "object",
-                                        "properties": {
-                                            "audience": {
-                                                "type": "string"
-                                            },
-                                            "clientId": {
-                                                "type": "string"
-                                            },
-                                            "method": {
-                                                "type": "string"
-                                            },
-                                            "scope": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "identityProviderId": {
-                                        "type": "string"
-                                    },
-                                    "ledgerApi": {
-                                        "type": "object",
-                                        "properties": {
-                                            "baseUrl": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                },
-                                "additionalProperties": false
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "kernel": {
-                    "type": "object",
-                    "properties": {
-                        "clientType": {
-                            "type": "string"
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "publicUrl": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "server": {
-                    "type": "object",
-                    "properties": {
-                        "allowedOrigins": {
-                            "type": "string"
-                        },
-                        "dappPath": {
-                            "type": "string"
-                        },
-                        "port": {
-                            "type": "integer"
-                        },
-                        "requestRateLimit": {
-                            "type": "integer"
-                        },
-                        "requestSizeLimit": {
-                            "type": "string"
-                        },
-                        "userPath": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "signingStore": {
-                    "type": "object",
-                    "properties": {
-                        "connection": {
-                            "type": "object",
-                            "properties": {
-                                "database": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "store": {
-                    "type": "object",
-                    "properties": {
-                        "connection": {
-                            "type": "object",
-                            "properties": {
-                                "database": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
-        },
-        "global": {
-            "description": "Global values shared between all subcharts",
-            "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key.",
-            "type": [
-                "object",
-                "null"
-            ]
-        },
-        "image": {
-            "type": "object",
-            "properties": {
-                "repo": {
-                    "type": "string"
-                },
-                "tag": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
-        },
-        "oauthSecrets": {
-            "type": "object",
-            "properties": {
-                "OAUTH2_DEVNET_CLIENT_SECRET": {
-                    "type": "object",
-                    "properties": {
-                        "secretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": true
-        },
-        "signing": {
-            "type": "object",
-            "properties": {
-                "blockdaemon": {
-                    "type": "object",
-                    "properties": {
-                        "apiKeyRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
-                        },
-                        "apiUrl": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
-        }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "config": {
+      "$ref": "config.schema.json",
+      "additionalProperties": true
     },
-    "additionalProperties": false,
-    "$defs": {
-        "config.schema.json": {
-            "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "$id": "config.schema.json",
-            "type": "object",
-            "required": [
-                "kernel",
-                "server",
-                "store",
-                "signingStore",
-                "bootstrap"
-            ],
-            "properties": {
-                "bootstrap": {
-                    "type": "object",
-                    "required": [
-                        "idps",
-                        "networks"
-                    ],
-                    "properties": {
-                        "idps": {
-                            "type": "array",
-                            "items": {
-                                "oneOf": [
-                                    {
-                                        "type": "object",
-                                        "required": [
-                                            "id",
-                                            "type",
-                                            "issuer"
-                                        ],
-                                        "properties": {
-                                            "id": {
-                                                "type": "string"
-                                            },
-                                            "issuer": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "const": "self_signed"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
-                                    {
-                                        "type": "object",
-                                        "required": [
-                                            "id",
-                                            "type",
-                                            "issuer",
-                                            "configUrl"
-                                        ],
-                                        "properties": {
-                                            "configUrl": {
-                                                "type": "string",
-                                                "format": "uri"
-                                            },
-                                            "id": {
-                                                "type": "string"
-                                            },
-                                            "issuer": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "const": "oauth"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    }
-                                ]
-                            }
-                        },
-                        "networks": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "required": [
-                                    "id",
-                                    "name",
-                                    "description",
-                                    "identityProviderId",
-                                    "ledgerApi",
-                                    "auth"
-                                ],
-                                "properties": {
-                                    "adminAuth": {
-                                        "anyOf": [
-                                            {
-                                                "oneOf": [
-                                                    {
-                                                        "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "authorization_code"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecret"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecret": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "client_credentials"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "issuer",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecret"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecret": {
-                                                                "type": "string"
-                                                            },
-                                                            "issuer": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "self_signed"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "oneOf": [
-                                                    {
-                                                        "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "authorization_code"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecretEnv"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecretEnv": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "client_credentials"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "issuer",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecretEnv"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecretEnv": {
-                                                                "type": "string"
-                                                            },
-                                                            "issuer": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "self_signed"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "auth": {
-                                        "anyOf": [
-                                            {
-                                                "oneOf": [
-                                                    {
-                                                        "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "authorization_code"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecret"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecret": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "client_credentials"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "issuer",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecret"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecret": {
-                                                                "type": "string"
-                                                            },
-                                                            "issuer": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "self_signed"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "oneOf": [
-                                                    {
-                                                        "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "authorization_code"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecretEnv"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecretEnv": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "client_credentials"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "required": [
-                                                            "method",
-                                                            "issuer",
-                                                            "audience",
-                                                            "scope",
-                                                            "clientId",
-                                                            "clientSecretEnv"
-                                                        ],
-                                                        "properties": {
-                                                            "audience": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientId": {
-                                                                "type": "string"
-                                                            },
-                                                            "clientSecretEnv": {
-                                                                "type": "string"
-                                                            },
-                                                            "issuer": {
-                                                                "type": "string"
-                                                            },
-                                                            "method": {
-                                                                "const": "self_signed"
-                                                            },
-                                                            "scope": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "additionalProperties": false
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "description": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "identityProviderId": {
-                                        "type": "string"
-                                    },
-                                    "ledgerApi": {
-                                        "type": "object",
-                                        "required": [
-                                            "baseUrl"
-                                        ],
-                                        "properties": {
-                                            "baseUrl": {
-                                                "type": "string",
-                                                "format": "uri"
-                                            }
-                                        },
-                                        "additionalProperties": false
-                                    },
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "synchronizerId": {
-                                        "type": "string"
-                                    }
-                                },
-                                "additionalProperties": false
-                            }
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "kernel": {
-                    "type": "object",
-                    "required": [
-                        "id",
-                        "clientType"
-                    ],
-                    "properties": {
-                        "clientType": {
-                            "anyOf": [
-                                {
-                                    "const": "browser"
-                                },
-                                {
-                                    "const": "desktop"
-                                },
-                                {
-                                    "const": "mobile"
-                                },
-                                {
-                                    "const": "remote"
-                                }
-                            ]
-                        },
-                        "id": {
-                            "type": "string"
-                        },
-                        "publicUrl": {
-                            "description": "The public base URL of the gateway, if available (e.g. https://wallet.example.com). This determines what browsers will try to use to connect, and is useful when using reverse proxies. If omitted, this will be derived from the server configuration.",
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "server": {
-                    "type": "object",
-                    "required": [
-                        "port",
-                        "dappPath",
-                        "userPath",
-                        "allowedOrigins",
-                        "requestSizeLimit",
-                        "requestRateLimit"
-                    ],
-                    "properties": {
-                        "admin": {
-                            "description": "The JWT claim (e.g. \"sub\") identifying the admin user. If set, requests with a matching claim will be granted admin privileges.",
-                            "type": "string"
-                        },
-                        "allowedOrigins": {
-                            "description": "Allowed CORS origins, typically corresponding to which external dApps are allowed to connect. Use \"*\" to allow all origins, or set an array of origin strings.",
-                            "default": "*",
-                            "anyOf": [
-                                {
-                                    "const": "*"
-                                },
-                                {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            ]
-                        },
-                        "dappPath": {
-                            "description": "The path serving the dapp API. Defaults /api/v0/dapp",
-                            "default": "/api/v0/dapp",
-                            "type": "string"
-                        },
-                        "host": {
-                            "description": "The host interface the server binds to. Deprecated as the service always binds to the local machine network interface. Will be removed in a future release.",
-                            "type": "string"
-                        },
-                        "port": {
-                            "description": "The port on which the NodeJS service will listen. Defaults to 3030.",
-                            "default": 3030,
-                            "type": "number"
-                        },
-                        "requestRateLimit": {
-                            "description": "The maximum number of requests per minute from a single IP address. Defaults to 10000.",
-                            "default": 10000,
-                            "type": "number"
-                        },
-                        "requestSizeLimit": {
-                            "description": "The maximum size of incoming requests. Defaults to 1mb.",
-                            "default": "1mb",
-                            "type": "string"
-                        },
-                        "tls": {
-                            "description": "Deprecated, this option no longer has any effect. Will be removed in a future release.",
-                            "type": "boolean"
-                        },
-                        "userPath": {
-                            "description": "The path serving the user API. Defaults /api/v0/user",
-                            "default": "/api/v0/user",
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "signingStore": {
-                    "type": "object",
-                    "required": [
-                        "connection"
-                    ],
-                    "properties": {
-                        "connection": {
-                            "oneOf": [
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type"
-                                    ],
-                                    "properties": {
-                                        "type": {
-                                            "const": "memory"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "database"
-                                    ],
-                                    "properties": {
-                                        "database": {
-                                            "type": "string"
-                                        },
-                                        "type": {
-                                            "const": "sqlite"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "host",
-                                        "port",
-                                        "user",
-                                        "password",
-                                        "database"
-                                    ],
-                                    "properties": {
-                                        "database": {
-                                            "type": "string"
-                                        },
-                                        "host": {
-                                            "type": "string"
-                                        },
-                                        "password": {
-                                            "type": "string"
-                                        },
-                                        "port": {
-                                            "type": "number"
-                                        },
-                                        "type": {
-                                            "const": "postgres"
-                                        },
-                                        "user": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                }
-                            ]
-                        }
-                    },
-                    "additionalProperties": false
-                },
-                "store": {
-                    "type": "object",
-                    "required": [
-                        "connection"
-                    ],
-                    "properties": {
-                        "connection": {
-                            "oneOf": [
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type"
-                                    ],
-                                    "properties": {
-                                        "type": {
-                                            "const": "memory"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "database"
-                                    ],
-                                    "properties": {
-                                        "database": {
-                                            "type": "string"
-                                        },
-                                        "type": {
-                                            "const": "sqlite"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                },
-                                {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "host",
-                                        "port",
-                                        "user",
-                                        "password",
-                                        "database"
-                                    ],
-                                    "properties": {
-                                        "database": {
-                                            "type": "string"
-                                        },
-                                        "host": {
-                                            "type": "string"
-                                        },
-                                        "password": {
-                                            "type": "string"
-                                        },
-                                        "port": {
-                                            "type": "number"
-                                        },
-                                        "type": {
-                                            "const": "postgres"
-                                        },
-                                        "user": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "additionalProperties": false
-                                }
-                            ]
-                        }
-                    },
-                    "additionalProperties": false
-                }
-            },
-            "additionalProperties": false
+    "global": {
+      "description": "Global values shared between all subcharts",
+      "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key.",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "repo": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
         }
+      },
+      "additionalProperties": false
+    },
+    "oauthSecrets": {
+      "type": "object",
+      "properties": {
+        "OAUTH2_DEVNET_CLIENT_SECRET": {
+          "type": "object",
+          "properties": {
+            "secretRef": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "signing": {
+      "type": "object",
+      "properties": {
+        "blockdaemon": {
+          "type": "object",
+          "properties": {
+            "apiKeyRef": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "apiUrl": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "config.schema.json": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "config.schema.json",
+      "type": "object",
+      "required": [
+        "kernel",
+        "server",
+        "store",
+        "signingStore",
+        "bootstrap"
+      ],
+      "properties": {
+        "bootstrap": {
+          "type": "object",
+          "required": [
+            "idps",
+            "networks"
+          ],
+          "properties": {
+            "idps": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type",
+                      "issuer"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "const": "self_signed"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type",
+                      "issuer",
+                      "configUrl"
+                    ],
+                    "properties": {
+                      "configUrl": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "const": "oauth"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "description",
+                  "identityProviderId",
+                  "ledgerApi",
+                  "auth"
+                ],
+                "properties": {
+                  "adminAuth": {
+                    "anyOf": [
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "auth": {
+                    "anyOf": [
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "identityProviderId": {
+                    "type": "string"
+                  },
+                  "ledgerApi": {
+                    "type": "object",
+                    "required": [
+                      "baseUrl"
+                    ],
+                    "properties": {
+                      "baseUrl": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "synchronizerId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "kernel": {
+          "type": "object",
+          "required": [
+            "id",
+            "clientType"
+          ],
+          "properties": {
+            "clientType": {
+              "anyOf": [
+                {
+                  "const": "browser"
+                },
+                {
+                  "const": "desktop"
+                },
+                {
+                  "const": "mobile"
+                },
+                {
+                  "const": "remote"
+                }
+              ]
+            },
+            "id": {
+              "type": "string"
+            },
+            "publicUrl": {
+              "description": "The public base URL of the gateway, if available (e.g. https://wallet.example.com). This determines what browsers will try to use to connect, and is useful when using reverse proxies. If omitted, this will be derived from the server configuration.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "server": {
+          "type": "object",
+          "required": [
+            "port",
+            "dappPath",
+            "userPath",
+            "allowedOrigins",
+            "requestSizeLimit",
+            "requestRateLimit"
+          ],
+          "properties": {
+            "admin": {
+              "description": "The JWT claim (e.g. \"sub\") identifying the admin user. If set, requests with a matching claim will be granted admin privileges.",
+              "type": "string"
+            },
+            "allowedOrigins": {
+              "description": "Allowed CORS origins, typically corresponding to which external dApps are allowed to connect. Use \"*\" to allow all origins, or set an array of origin strings.",
+              "default": "*",
+              "anyOf": [
+                {
+                  "const": "*"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "dappPath": {
+              "description": "The path serving the dapp API. Defaults /api/v0/dapp",
+              "default": "/api/v0/dapp",
+              "type": "string"
+            },
+            "host": {
+              "description": "The host interface the server binds to. Deprecated as the service always binds to the local machine network interface. Will be removed in a future release.",
+              "type": "string"
+            },
+            "port": {
+              "description": "The port on which the NodeJS service will listen. Defaults to 3030.",
+              "default": 3030,
+              "type": "number"
+            },
+            "requestRateLimit": {
+              "description": "The maximum number of requests per minute from a single IP address. Defaults to 10000.",
+              "default": 10000,
+              "type": "number"
+            },
+            "requestSizeLimit": {
+              "description": "The maximum size of incoming requests. Defaults to 1mb.",
+              "default": "1mb",
+              "type": "string"
+            },
+            "tls": {
+              "description": "Deprecated, this option no longer has any effect. Will be removed in a future release.",
+              "type": "boolean"
+            },
+            "userPath": {
+              "description": "The path serving the user API. Defaults /api/v0/user",
+              "default": "/api/v0/user",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "signingStore": {
+          "type": "object",
+          "required": [
+            "connection"
+          ],
+          "properties": {
+            "connection": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "const": "memory"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "database"
+                  ],
+                  "properties": {
+                    "database": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "const": "sqlite"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "host",
+                    "port",
+                    "user",
+                    "password",
+                    "database"
+                  ],
+                  "properties": {
+                    "database": {
+                      "type": "string"
+                    },
+                    "host": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "port": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "const": "postgres"
+                    },
+                    "user": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "store": {
+          "type": "object",
+          "required": [
+            "connection"
+          ],
+          "properties": {
+            "connection": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "const": "memory"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "database"
+                  ],
+                  "properties": {
+                    "database": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "const": "sqlite"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "type",
+                    "host",
+                    "port",
+                    "user",
+                    "password",
+                    "database"
+                  ],
+                  "properties": {
+                    "database": {
+                      "type": "string"
+                    },
+                    "host": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "port": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "const": "postgres"
+                    },
+                    "user": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
 }

@@ -18,6 +18,7 @@ oauthSecrets:
       key: ""
 
 # @schema $ref: ./config.schema.json
+# @schema additionalProperties: true
 config:
   kernel:
     id: remote-da
@@ -45,6 +46,9 @@ config:
         issuer: "<oauth_issuer>"
         # url to .well-known/openid-configuration document
         configUrl: "http://oauth.example.com/.well-known/openid-configuration"
+      - id: "idp-local"
+        type: "self_signed"
+        issuer: "unsafe-auth"
     networks:
       - id: "devnet"
         name: "Canton DevNet (example)"
@@ -64,3 +68,23 @@ config:
           clientId: "<oauth_admin_client_id>"
           # should correlate to a secret provided in oauthSecrets
           clientSecretEnv: "OAUTH2_DEVNET_CLIENT_SECRET"
+      - id: "local"
+        name: "Local (self-signed example)"
+        description: "Connect to a local self-signed network"
+        identityProviderId: "idp-local"
+        ledgerApi:
+          baseUrl: "http://localhost:3975"
+        auth:
+          method: "self_signed"
+          issuer: "unsafe-auth"
+          clientId: "<local_user>"
+          clientSecret: "unsafe"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<local_audience>"
+        adminAuth:
+          method: "self_signed"
+          issuer: "unsafe-auth"
+          clientId: "admin"
+          clientSecret: "unsafe"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<local_audience>"
