@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+repo_root="${script_dir}/.."
+app_dir="${repo_root}/apps/wallet-gateway"
+version_file="${app_dir}/VERSION"
+
+if [ ! -f "${version_file}" ]; then
+  echo "❌ Error: ${version_file} file not found."
+  exit 1
+fi
+
+version="$(<"${version_file}")"
+
+echo "🚀 Syncing repository to Wallet Gateway version: ${version}"
+
+echo "📦 Updating NPM package and package-lock.json..."
+# Using a subshell ( ) ensures the 'cd' only applies to this specific block
+(
+  cd "${app_dir}"
+  npm install "@canton-network/wallet-gateway-remote@${version}" --save-exact
+)
+echo "⚙️ Running helm-gen to update schema..."
+helm-gen wallet-gateway
+
+echo ""
+echo "✅ Sync complete! Ready to commit."

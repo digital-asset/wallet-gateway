@@ -52,8 +52,6 @@ jobs:
         id: docker-export
         with:
           file: ./apps/wallet-gateway/Dockerfile
-          # Always use the stable version to pull down the npm package
-          build-args: version=${{ steps.versions.outputs.stable }}
           load: true
 
       - name: Test container initializes successfully
@@ -70,8 +68,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: ./apps/wallet-gateway/Dockerfile
-          # Always use the stable version to pull down the npm package
-          build-args: version=${{ steps.versions.outputs.stable }}
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.tags.outputs.tags }}
