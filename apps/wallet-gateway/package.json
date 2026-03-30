@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@canton-network/wallet-gateway-remote": "0.23.1",
+    "@canton-network/wallet-gateway-remote": "0.24.0",
     "path-to-regexp": "8.3.0"
   }
 }
