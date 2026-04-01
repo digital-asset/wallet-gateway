@@ -28,54 +28,11 @@
     },
     "oauthSecrets": {
       "type": "object",
-      "properties": {
-        "OAUTH2_DEVNET_CLIENT_SECRET": {
-          "type": "object",
-          "properties": {
-            "secretRef": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
-            }
-          },
-          "additionalProperties": false
-        }
-      },
       "additionalProperties": true
     },
     "signing": {
       "type": "object",
-      "properties": {
-        "blockdaemon": {
-          "type": "object",
-          "properties": {
-            "apiKeyRef": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
-            },
-            "apiUrl": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
+      "additionalProperties": true
     }
   },
   "additionalProperties": false,

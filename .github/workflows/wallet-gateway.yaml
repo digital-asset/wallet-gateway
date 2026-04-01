@@ -11,7 +11,7 @@ jobs:
     runs-on: digital-asset-wallet-gateway
     steps:
       - uses: actions/checkout@v6
-      - run: helm unittest charts/wallet-gateway
+      - run: helm unittest -v charts/wallet-gateway/values.test.yaml charts/wallet-gateway
       - run: ./bin/helm-gen wallet-gateway
       - run: ./.github/scripts/git-dirty-check
 
