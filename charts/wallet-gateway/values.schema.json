@@ -598,6 +598,33 @@
           },
           "additionalProperties": false
         },
+        "logging": {
+          "description": "Optional logging configuration. If omitted, defaults will be used.",
+          "type": "object",
+          "properties": {
+            "format": {
+              "description": "The log format for the gateway. If omitted, defaults to pretty.",
+              "type": "string",
+              "enum": [
+                "json",
+                "pretty"
+              ]
+            },
+            "level": {
+              "description": "The log level for the gateway. If omitted, defaults to info.",
+              "type": "string",
+              "enum": [
+                "trace",
+                "debug",
+                "info",
+                "warn",
+                "error",
+                "fatal"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
         "server": {
           "type": "object",
           "required": [
