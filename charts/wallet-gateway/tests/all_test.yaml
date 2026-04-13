@@ -149,7 +149,8 @@ tests:
                 "port": 3030,
                 "requestRateLimit": 100,
                 "requestSizeLimit": "5mb",
-                "userPath": "/api/v0/user"
+                "userPath": "/api/v0/user",
+                "trustProxy": true
               },
               "signingStore": {
                 "connection": {
