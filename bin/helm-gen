@@ -13,7 +13,7 @@ fi
 set -x
 
 if [ "${chart}" == 'wallet-gateway' ]; then
-    version="$(<"${repo_root}/apps/wallet-gateway/VERSION")"
+    version="0.26.0"
     npx --yes "@canton-network/wallet-gateway-remote@${version}" --config-schema >"${repo_root}/charts/wallet-gateway/config.schema.json"
 fi
 
