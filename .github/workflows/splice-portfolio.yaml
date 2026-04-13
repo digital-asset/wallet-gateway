@@ -1,6 +1,6 @@
 name: splice-portfolio
 on:
-  - push
+  - pull_request
 
 defaults:
   run:
