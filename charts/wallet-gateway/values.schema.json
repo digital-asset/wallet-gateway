@@ -72,8 +72,7 @@
               "type": "string"
             },
             "caip2": {
-              "type": "string",
-              "enum": ["", "canton:devnet", "canton:testnet", "canton:mainnet"]
+              "type": "string"
             }
           },
           "additionalProperties": false
