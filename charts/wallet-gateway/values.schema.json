@@ -633,7 +633,8 @@
             "userPath",
             "allowedOrigins",
             "requestSizeLimit",
-            "requestRateLimit"
+            "requestRateLimit",
+            "trustProxy"
           ],
           "properties": {
             "admin": {
@@ -682,6 +683,23 @@
             "tls": {
               "description": "Deprecated, this option no longer has any effect. Will be removed in a future release.",
               "type": "boolean"
+            },
+            "trustProxy": {
+              "description": "Express trust proxy setting used to resolve client IP addresses when running behind reverse proxies/load balancers. Set this correctly in production (for example 1 for a single trusted proxy hop). Defaults to false.",
+              "default": false,
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "integer",
+                  "maximum": 9007199254740991,
+                  "minimum": 0
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "userPath": {
               "description": "The path serving the user API. Defaults /api/v0/user",
