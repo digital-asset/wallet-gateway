@@ -31,6 +31,7 @@ config:
     allowedOrigins: "*"
     requestSizeLimit: "5mb"
     requestRateLimit: 100
+    trustProxy: true
   store:
     connection:
       type: sqlite
