@@ -8,6 +8,10 @@ signing:
     apiKeyRef:
       name: ""
       key: ""
+    # CAIP-2 chain identifier passed to the Blockdaemon signing API.
+    # One of: canton:devnet, canton:testnet, canton:mainnet.
+    # Leave empty to fall back to the wallet-gateway binary default (canton:testnet).
+    caip2: ""
 
 # @schema additionalProperties: true
 oauthSecrets:

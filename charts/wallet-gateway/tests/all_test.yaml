@@ -58,6 +58,21 @@ tests:
               secretKeyRef:
                 name: "my-secret"
                 key: "my-key"
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BLOCKDAEMON_CAIP2
+  - it: should render BLOCKDAEMON_CAIP2 when caip2 is set
+    set:
+      signing.blockdaemon.caip2: "canton:devnet"
+    templates:
+      - deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BLOCKDAEMON_CAIP2
+            value: "canton:devnet"
   - it: should render a service
     templates:
       - service.yaml
