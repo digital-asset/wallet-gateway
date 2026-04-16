@@ -1,0 +1,99 @@
+image:
+  repo: ghcr.io/digital-asset/wallet-gateway/docker
+  tag: ""
+
+signing:
+  blockdaemon:
+    apiUrl: "http://localhost:5080/api/cwp/canton"
+    apiKeyRef:
+      name: ""
+      key: ""
+    capi2: ""
+# fireblocks:
+#   apiKeyRef:
+#     name: ""
+#     key: ""
+#   secretRef:
+#     name: ""
+#     key: ""
+
+# @schema additionalProperties: true
+oauthSecrets:
+  # map a kubernetes secret to a Wallet Gateway network auth config
+  OAUTH2_DEVNET_CLIENT_SECRET:
+    secretRef:
+      name: ""
+      key: ""
+
+# @schema $ref: ./config.schema.json
+# @schema additionalProperties: true
+config:
+  kernel:
+    id: remote-da
+    publicUrl: "https://wallet.example.com"
+    clientType: remote
+  server:
+    port: 3030
+    dappPath: "/api/v0/dapp"
+    userPath: "/api/v0/user"
+    allowedOrigins: "*"
+    requestSizeLimit: "5mb"
+    requestRateLimit: 100
+    trustProxy: true
+  store:
+    connection:
+      type: sqlite
+      database: store.sqlite
+  signingStore:
+    connection:
+      type: sqlite
+      database: signing_store.sqlite
+  bootstrap:
+    idps:
+      - id: "idp-devnet"
+        type: "oauth"
+        issuer: "<oauth_issuer>"
+        # url to .well-known/openid-configuration document
+        configUrl: "http://oauth.example.com/.well-known/openid-configuration"
+      - id: "idp-local"
+        type: "self_signed"
+        issuer: "unsafe-auth"
+    networks:
+      - id: "devnet"
+        name: "Canton DevNet (example)"
+        description: "Connect to Canton DevNet"
+        identityProviderId: "idp-devnet"
+        ledgerApi:
+          baseUrl: "https://devnet.example.com"
+        auth:
+          method: "authorization_code"
+          clientId: "<oauth_user>"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<oauth_audience>"
+        adminAuth:
+          method: "client_credentials"
+          scope: "daml_ledger_api"
+          audience: "<oauth_audience>"
+          clientId: "<oauth_admin_client_id>"
+          # should correlate to a secret provided in oauthSecrets
+          clientSecretEnv: "OAUTH2_DEVNET_CLIENT_SECRET"
+      - id: "local"
+        name: "Local (self-signed example)"
+        description: "Connect to a local self-signed network"
+        identityProviderId: "idp-local"
+        ledgerApi:
+          baseUrl: "http://localhost:3975"
+        auth:
+          method: "self_signed"
+          issuer: "unsafe-auth"
+          clientId: "<local_user>"
+          clientSecret: "unsafe"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<local_audience>"
+        adminAuth:
+          method: "self_signed"
+          issuer: "unsafe-auth"
+          clientId: "admin"
+          clientSecret: "unsafe"
+          scope: "openid daml_ledger_api offline_access"
+          audience: "<local_audience>"
