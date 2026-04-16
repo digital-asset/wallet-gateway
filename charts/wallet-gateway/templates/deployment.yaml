@@ -44,6 +44,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   {{- toYaml .Values.signing.blockdaemon.apiKeyRef | nindent 18 }}
+
+            {{- if .Values.signing.blockdaemon.caip2 }}
+            - name: BLOCKDAEMON_CAIP2
+              value: {{ .Values.signing.blockdaemon.caip2 | quote }}
+            {{- end }}
             {{- end }}
 
             {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
