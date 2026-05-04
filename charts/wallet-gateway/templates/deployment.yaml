@@ -17,6 +17,7 @@ spec:
       labels:
         app: "{{ .Release.Name}}-wallet-gateway"
     spec:
+      initContainers: {{ .Values.initContainers }}
       containers:
         - name: wallet-gateway
           image: "{{ .Values.image.repo }}/wallet-gateway:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
