@@ -26,6 +26,9 @@
       },
       "additionalProperties": false
     },
+    "initContainers": {
+      "type": "array"
+    },
     "oauthSecrets": {
       "type": "object",
       "additionalProperties": true
