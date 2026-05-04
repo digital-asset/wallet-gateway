@@ -2,6 +2,8 @@ image:
   repo: ghcr.io/digital-asset/wallet-gateway/docker
   tag: ""
 
+initContainers: {}
+
 # @schema additionalProperties: true
 signing: {}
 # blockdaemon:
