@@ -51,6 +51,36 @@ spec:
             {{- end }}
             {{- end }}
 
+            {{- /* DFNS env vars */ -}}
+            {{- if and .Values.signing .Values.signing.dfns .Values.signing.dfns.orgId }}
+            - name: DFNS_ORG_ID
+              value: {{ .Values.signing.dfns.orgId | quote }}
+
+            - name: DFNS_BASE_URL
+              value: {{ .Values.signing.dfns.baseUrl | default "https://api.dfns.io" | quote }}
+
+            {{- if .Values.signing.dfns.credIdRef }}
+            - name: DFNS_CRED_ID
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.dfns.credIdRef | nindent 18 }}
+            {{- end }}
+
+            {{- if .Values.signing.dfns.privateKeyRef }}
+            - name: DFNS_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.dfns.privateKeyRef | nindent 18 }}
+            {{- end }}
+
+            {{- if .Values.signing.dfns.authTokenRef }}
+            - name: DFNS_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- toYaml .Values.signing.dfns.authTokenRef | nindent 18 }}
+            {{- end }}
+            {{- end }}
+
             {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
             {{- range .Values.config.bootstrap.networks }}
               {{- /* Create a list of the two auth blocks to check both */ -}}
