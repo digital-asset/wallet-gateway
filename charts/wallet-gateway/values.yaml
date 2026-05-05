@@ -22,6 +22,20 @@ signing: {}
 #   secretRef:
 #     name: ""
 #     key: ""
+# dfns:
+#   # Required to enable DFNS signing driver.
+#   orgId: ""
+#   # Optional; defaults to https://api.dfns.io when unset.
+#   baseUrl: ""
+#   credIdRef:
+#     name: ""
+#     key: ""
+#   privateKeyRef:
+#     name: ""
+#     key: ""
+#   authTokenRef:
+#     name: ""
+#     key: ""
 
 # @schema additionalProperties: true
 oauthSecrets: {}

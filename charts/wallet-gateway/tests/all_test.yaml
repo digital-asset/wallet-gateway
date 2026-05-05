@@ -73,6 +73,52 @@ tests:
           content:
             name: BLOCKDAEMON_CAIP2
             value: "canton:devnet"
+  - it: should render DFNS env vars when orgId is set
+    set:
+      signing.dfns.orgId: "org-123"
+      signing.dfns.credIdRef.name: "dfns-creds"
+      signing.dfns.credIdRef.key: "cred-id"
+      signing.dfns.privateKeyRef.name: "dfns-creds"
+      signing.dfns.privateKeyRef.key: "private-key"
+      signing.dfns.authTokenRef.name: "dfns-creds"
+      signing.dfns.authTokenRef.key: "auth-token"
+    templates:
+      - deployment.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DFNS_ORG_ID
+            value: "org-123"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DFNS_BASE_URL
+            value: "https://api.dfns.io"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DFNS_CRED_ID
+            valueFrom:
+              secretKeyRef:
+                name: "dfns-creds"
+                key: "cred-id"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DFNS_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: "dfns-creds"
+                key: "private-key"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DFNS_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: "dfns-creds"
+                key: "auth-token"
   - it: should render a service
     templates:
       - service.yaml
