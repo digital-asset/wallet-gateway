@@ -24,6 +24,9 @@ tests:
           tee >(cat >&${out}) | \
           tee >(cat -n >&2) | \
           kubeconform -verbose -strict -cache cache/kubeconform >&2
+    set:
+      serviceAccount:
+        create: true
     asserts:
       - hasDocuments:
           count: 1
@@ -125,6 +128,26 @@ tests:
     asserts:
       - isKind:
           of: Service
+  - it: should render a serviceaccount if enabled
+    templates:
+      - serviceaccount.yaml
+    set:
+      serviceAccount:
+        create: true
+    asserts:
+      - isKind:
+          of: ServiceAccount
+  - it: should use serviceaccount in deployment
+    templates:
+      - deployment.yaml
+    set:
+      serviceAccount:
+        create: true
+        name: foo
+    asserts:
+      - equal:
+          path: .spec.template.spec.serviceAccountName
+          value: foo
   - it: should render a configmap (correctly)
     templates:
       - configmap.yaml

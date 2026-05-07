@@ -4,6 +4,12 @@ image:
 
 initContainers: []
 
+serviceAccount:
+  name: default
+  create: false
+  # @schema additionalProperties:true
+  annotations: {}
+
 # @schema additionalProperties: true
 signing: {}
 # blockdaemon:
