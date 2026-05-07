@@ -17,6 +17,7 @@ spec:
       labels:
         app: "{{ .Release.Name}}-wallet-gateway"
     spec:
+      serviceAccountName: "{{ .Values.serviceAccount.name }}"
       initContainers:
       {{- if .Values.initContainers }}
       {{- .Values.initContainers | toYamlPretty | nindent 8 }}
