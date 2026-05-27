@@ -76,7 +76,7 @@ jobs:
       - name: Helm Build and Publish
         uses: ./.github/actions/helm-build-push
         with:
-          chart: charts/splice-portfolio
+          name: splice-portfolio
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry-unstable: ghcr.io/digital-asset/splice-portfolio-unstable/helm
