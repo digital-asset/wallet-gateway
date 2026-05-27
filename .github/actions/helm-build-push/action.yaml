@@ -7,7 +7,6 @@ description: Builds and pushes Helm Charts
 inputs:
   name:
     description: The name of the chart
-    default: ${{ github.event.repository.name }}
     required: true
   registry-unstable:
     description: The unstable registry path
