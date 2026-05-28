@@ -751,7 +751,7 @@
                       "type": "string"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": {}
                 }
               ]
             }
@@ -824,7 +824,7 @@
                       "type": "string"
                     }
                   },
-                  "additionalProperties": false
+                  "additionalProperties": {}
                 }
               ]
             }
