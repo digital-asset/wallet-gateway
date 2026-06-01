@@ -11,16 +11,10 @@ RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /app/node_modules/@canton-network/example-portfolio/dist /usr/share/nginx/html/
 
-# Configure nginx for SPA routing
-RUN echo 'server { \
-    listen 80; \
-    server_name localhost; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Runtime portfolio config is served from /config.json.
+# To override it, mount a file at /usr/share/nginx/html/config.json.
+
+COPY apps/splice-portfolio/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
