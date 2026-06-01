@@ -1,3 +1,11 @@
 image:
   repo: ghcr.io/digital-asset/splice-portfolio/docker
   tag: ""
+
+config:
+  validatorUrl: "http://localhost:2000/api/validator"
+  scanProxyUrl: "http://localhost:2000/api/validator"
+  registries:
+    - url: ""
+      # name: ""      # (optional)
+      # partyId: ""   # (optional)
