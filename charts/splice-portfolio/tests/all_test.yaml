@@ -40,3 +40,23 @@ tests:
     asserts:
       - isKind:
           of: Service
+  - it: should render a configmap (correctly)
+    templates:
+      - configmap.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: data["config.json"]
+          value: |
+            {
+              "registries": [
+                {
+                  "name": "",
+                  "partyId": "",
+                  "url": "https://registry.example.com"
+                }
+              ],
+              "scanProxyUrl": "http://localhost:2000/api/validator",
+              "validatorUrl": "http://localhost:2000/api/validator"
+            }

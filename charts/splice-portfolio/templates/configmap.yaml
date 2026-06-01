@@ -1,7 +1,9 @@
+{{- $confHash := .Values.config | toPrettyJson | sha256sum | trunc 6 -}}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Release.Name }}-splice-portfolio-config"
+  name: "{{ .Release.Name }}-splice-portfolio-config-{{ $confHash }}"
   namespace: "{{ .Release.Namespace }}"
 data:
   config.json: |
