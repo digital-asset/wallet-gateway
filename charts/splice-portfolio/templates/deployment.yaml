@@ -39,3 +39,11 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "250m"
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+      volumes:
+        - name: config
+          configMap:
+            name: "{{ .Release.Name }}-splice-portfolio-config"

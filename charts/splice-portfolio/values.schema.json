@@ -2,6 +2,39 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {
+        "config": {
+            "type": "object",
+            "required": [
+                "validatorUrl"
+            ],
+            "properties": {
+                "registries": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "url"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "partyId": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "validatorUrl": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
         "global": {
             "description": "Global values shared between all subcharts",
             "$comment": "Added automatically by 'helm schema' to allow this chart to be used as a Helm dependency, as the `additionalProperties` setting would otherwise collide with Helm's special 'global' values key.",
