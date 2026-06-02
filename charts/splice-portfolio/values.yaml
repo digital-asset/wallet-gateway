@@ -1,3 +1,10 @@
 image:
   repo: ghcr.io/digital-asset/splice-portfolio/docker
   tag: ""
+
+config:
+  validatorUrl: "http://localhost:2000/api/validator" # @schema required
+  registries:
+    - url: "https://registry.example.com" # @schema required
+      name: "" # (optional)
+      partyId: "" # (optional)

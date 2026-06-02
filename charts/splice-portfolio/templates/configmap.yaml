@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Release.Name }}-wallet-gateway-config-{{ $confHash }}"
+  name: "{{ .Release.Name }}-splice-portfolio-config-{{ $confHash }}"
   namespace: "{{ .Release.Namespace }}"
 data:
   config.json: |
