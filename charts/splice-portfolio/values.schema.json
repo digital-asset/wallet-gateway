@@ -5,8 +5,7 @@
         "config": {
             "type": "object",
             "required": [
-                "validatorUrl",
-                "scanProxyUrl"
+                "validatorUrl"
             ],
             "properties": {
                 "registries": {
@@ -29,9 +28,6 @@
                         },
                         "additionalProperties": false
                     }
-                },
-                "scanProxyUrl": {
-                    "type": "string"
                 },
                 "validatorUrl": {
                     "type": "string"

@@ -4,7 +4,6 @@ image:
 
 config:
   validatorUrl: "http://localhost:2000/api/validator" # @schema required
-  scanProxyUrl: "http://localhost:2000/api/validator" # @schema required
   registries:
     - url: "https://registry.example.com" # @schema required
       name: "" # (optional)

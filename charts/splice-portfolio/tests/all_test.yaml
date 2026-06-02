@@ -57,6 +57,5 @@ tests:
                   "url": "https://registry.example.com"
                 }
               ],
-              "scanProxyUrl": "http://localhost:2000/api/validator",
               "validatorUrl": "http://localhost:2000/api/validator"
             }
