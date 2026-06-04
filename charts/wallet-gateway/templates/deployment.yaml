@@ -1,3 +1,5 @@
+{{- $confHash := .Values.config | toPrettyJson | sha256sum | trunc 6 -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -123,4 +125,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: "{{ .Release.Name }}-wallet-gateway-config"
+            name: "{{ .Release.Name }}-wallet-gateway-config-{{ $confHash }}"
