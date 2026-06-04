@@ -1,3 +1,5 @@
+{{- $confHash := .Values.config | toPrettyJson | sha256sum | trunc 6 -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,4 +48,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: "{{ .Release.Name }}-splice-portfolio-config"
+            name: "{{ .Release.Name }}-splice-portfolio-config-{{ $confHash }}"
