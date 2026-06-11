@@ -4,33 +4,55 @@
     "properties": {
         "config": {
             "type": "object",
-            "required": [
-                "validatorUrl"
-            ],
             "properties": {
-                "registries": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "url"
-                        ],
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "partyId": {
-                                "type": "string"
-                            },
-                            "url": {
-                                "type": "string"
+                "amulet": {
+                    "type": "object",
+                    "required": [
+                        "validatorUrl",
+                        "registry"
+                    ],
+                    "properties": {
+                        "registry": {
+                            "type": "string"
+                        },
+                        "validatorUrl": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "token": {
+                    "type": "object",
+                    "required": [
+                        "validatorUrl"
+                    ],
+                    "properties": {
+                        "registries": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "partyId": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                },
+                                "additionalProperties": false
                             }
                         },
-                        "additionalProperties": false
-                    }
-                },
-                "validatorUrl": {
-                    "type": "string"
+                        "validatorUrl": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
                 }
             },
             "additionalProperties": false
