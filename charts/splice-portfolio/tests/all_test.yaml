@@ -50,12 +50,18 @@ tests:
           path: data["config.json"]
           value: |
             {
-              "registries": [
-                {
-                  "name": "",
-                  "partyId": "",
-                  "url": "https://registry.example.com"
-                }
-              ],
-              "validatorUrl": "http://localhost:2000/api/validator"
+              "amulet": {
+                "registry": "http://scan.localhost:4000/registry/",
+                "validatorUrl": "http://localhost:2000/api/validator"
+              },
+              "token": {
+                "registries": [
+                  {
+                    "name": "",
+                    "partyId": "party-hint::fingerprint",
+                    "url": "https://registry.example.com"
+                  }
+                ],
+                "validatorUrl": "http://localhost:2000/api/validator"
+              }
             }

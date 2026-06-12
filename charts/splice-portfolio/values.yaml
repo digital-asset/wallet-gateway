@@ -3,8 +3,12 @@ image:
   tag: ""
 
 config:
-  validatorUrl: "http://localhost:2000/api/validator" # @schema required
-  registries:
-    - url: "https://registry.example.com" # @schema required
-      name: "" # (optional)
-      partyId: "" # (optional)
+  amulet:
+    validatorUrl: "http://localhost:2000/api/validator" # @schema required
+    registry: "http://scan.localhost:4000/registry/" # @schema required
+  token:
+    validatorUrl: "http://localhost:2000/api/validator" # @schema required
+    registries:
+      - url: "https://registry.example.com" # @schema required
+        name: "" # (optional)
+        partyId: "party-hint::fingerprint" # (optional)
