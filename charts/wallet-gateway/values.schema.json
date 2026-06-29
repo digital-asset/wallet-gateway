@@ -529,6 +529,188 @@
                   "name": {
                     "type": "string"
                   },
+                  "serviceAccountAuth": {
+                    "anyOf": [
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecret"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecret": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      {
+                        "oneOf": [
+                          {
+                            "description": "Authorization code flow authentication configuration. This is used for browser-based application login.",
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "authorization_code"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "client_credentials"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "issuer",
+                              "audience",
+                              "scope",
+                              "clientId",
+                              "clientSecretEnv"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "type": "string"
+                              },
+                              "clientId": {
+                                "type": "string"
+                              },
+                              "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "issuer": {
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    ]
+                  },
                   "synchronizerId": {
                     "type": "string",
                     "pattern": "::",
