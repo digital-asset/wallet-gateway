@@ -46,6 +46,18 @@ jobs:
           registry-unstable: ghcr.io/digital-asset/splice-portfolio-unstable/docker
           registry-stable: ghcr.io/digital-asset/splice-portfolio/docker
 
+        # Build first for testing (no publish): https://docs.docker.com/build/ci/github-actions/test-before-push/
+      - name: Build and export to Docker
+        uses: docker/build-push-action@v6
+        id: docker-export
+        with:
+          file: ./apps/splice-portfolio/Dockerfile
+          build-args: version=${{ steps.versions.outputs.stable }}
+          load: true
+
+      - name: Test container serves portfolio
+        run: ./bin/test-portfolio-container.sh ${{ steps.docker-export.outputs.imageid }}
+
       # Setup buildx for multi-platform
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
