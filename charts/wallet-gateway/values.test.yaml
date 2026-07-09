@@ -40,6 +40,8 @@ config:
     requestSizeLimit: "5mb"
     requestRateLimit: 100
     trustProxy: true
+    signingWorker:
+      pollInterval: 5000
   store:
     connection:
       type: sqlite
