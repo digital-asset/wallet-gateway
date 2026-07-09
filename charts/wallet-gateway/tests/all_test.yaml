@@ -233,6 +233,9 @@ tests:
                 "port": 3030,
                 "requestRateLimit": 100,
                 "requestSizeLimit": "5mb",
+                "signingWorker": {
+                  "pollInterval": 5000
+                },
                 "trustProxy": true,
                 "userPath": "/api/v0/user"
               },

@@ -792,7 +792,8 @@
             "allowedOrigins",
             "requestSizeLimit",
             "requestRateLimit",
-            "trustProxy"
+            "trustProxy",
+            "signingWorker"
           ],
           "properties": {
             "admin": {
@@ -837,6 +838,22 @@
               "description": "The maximum size of incoming requests. Defaults to 1mb.",
               "default": "1mb",
               "type": "string"
+            },
+            "signingWorker": {
+              "type": "object",
+              "required": [
+                "pollInterval"
+              ],
+              "properties": {
+                "pollInterval": {
+                  "description": "Interval in milliseconds for the signing worker to poll external signing providers on pending transactions. Defaults to 5000.",
+                  "default": 5000,
+                  "type": "integer",
+                  "maximum": 9007199254740991,
+                  "exclusiveMinimum": 0
+                }
+              },
+              "additionalProperties": false
             },
             "tls": {
               "description": "Deprecated, this option no longer has any effect. Will be removed in a future release.",
