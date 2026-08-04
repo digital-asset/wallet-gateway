@@ -14,10 +14,7 @@ set -x
 
 if [ "${chart}" == 'wallet-gateway' ]; then
     version="$(<"${repo_root}/apps/wallet-gateway/VERSION")"
-    # Helm-only patch releases (e.g. 1.6.0-patch.0) have no matching npm tag;
-    # strip the suffix so config schema still resolves against the published package.
-    npm_version="${version%%-patch*}"
-    npx --yes "@canton-network/wallet-gateway-remote@${npm_version}" --config-schema >"${repo_root}/charts/wallet-gateway/config.schema.json"
+    npx --yes "@canton-network/wallet-gateway-remote@${version}" --config-schema >"${repo_root}/charts/wallet-gateway/config.schema.json"
 fi
 
 schema_file="${repo_root}/charts/${chart}/values.schema.json"
