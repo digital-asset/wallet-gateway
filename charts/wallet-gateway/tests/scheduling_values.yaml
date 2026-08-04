@@ -1,0 +1,66 @@
+replicas: 2
+
+strategy:
+  type: RollingUpdate
+
+imagePullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: regcred
+
+resources:
+  requests:
+    cpu: 100m
+
+podSecurityContext:
+  fsGroup: 1000
+
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+
+extraEnv:
+  - name: EXTRA_VAR
+    value: "hello"
+
+envFrom:
+  - secretRef:
+      name: extra-secret
+
+extraVolumes:
+  - name: extra
+    emptyDir: {}
+
+extraVolumeMounts:
+  - name: extra
+    mountPath: /extra
+
+podLabels:
+  tier: app
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+
+nodeSelector:
+  agentpool: app
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: agentpool
+              operator: In
+              values:
+                - app
+
+tolerations:
+  - key: dedicated
+    operator: Equal
+    value: app
+    effect: NoSchedule
+
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 30

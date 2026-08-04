@@ -2,6 +2,66 @@ image:
   repo: ghcr.io/digital-asset/wallet-gateway/docker
   tag: ""
 
+replicas: 1
+
+# @schema additionalProperties: true
+strategy:
+  type: Recreate
+
+imagePullPolicy: Always
+imagePullSecrets: []
+
+# @schema additionalProperties: true
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+# @schema additionalProperties: true
+podSecurityContext: {}
+
+# @schema additionalProperties: true
+containerSecurityContext: {}
+
+extraEnv: []
+envFrom: []
+extraVolumes: []
+extraVolumeMounts: []
+
+# @schema additionalProperties: true
+podLabels: {}
+
+# @schema additionalProperties: true
+podAnnotations: {}
+
+# @schema additionalProperties: true
+nodeSelector: {}
+
+# @schema additionalProperties: true
+affinity: {}
+
+tolerations: []
+
+# @schema additionalProperties: true
+livenessProbe:
+  # @schema additionalProperties: true
+  httpGet:
+    path: /healthz
+    port: http
+
+# @schema additionalProperties: true
+readinessProbe:
+  # @schema additionalProperties: true
+  httpGet:
+    path: /readyz
+    port: http
+
+# @schema additionalProperties: true
+startupProbe: {}
+
 initContainers: []
 
 serviceAccount:
