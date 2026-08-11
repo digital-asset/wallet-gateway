@@ -2,9 +2,29 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
+    "affinity": {
+      "type": "object",
+      "additionalProperties": true
+    },
     "config": {
       "$ref": "config.schema.json",
       "additionalProperties": true
+    },
+    "containerSecurityContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "envFrom": {
+      "type": "array"
+    },
+    "extraEnv": {
+      "type": "array"
+    },
+    "extraVolumeMounts": {
+      "type": "array"
+    },
+    "extraVolumes": {
+      "type": "array"
     },
     "global": {
       "description": "Global values shared between all subcharts",
@@ -26,11 +46,102 @@
       },
       "additionalProperties": false
     },
+    "imagePullPolicy": {
+      "type": "string"
+    },
+    "imagePullSecrets": {
+      "type": "array"
+    },
     "initContainers": {
       "type": "array"
     },
+    "livenessProbe": {
+      "type": "object",
+      "properties": {
+        "httpGet": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "port": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "nodeSelector": {
+      "type": "object",
+      "additionalProperties": true
+    },
     "oauthSecrets": {
       "type": "object",
+      "additionalProperties": true
+    },
+    "podAnnotations": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "podLabels": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "podSecurityContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "readinessProbe": {
+      "type": "object",
+      "properties": {
+        "httpGet": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "port": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "replicas": {
+      "type": "integer"
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "limits": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string"
+            },
+            "memory": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "requests": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "type": "string"
+            },
+            "memory": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
       "additionalProperties": true
     },
     "serviceAccount": {
@@ -52,6 +163,22 @@
     "signing": {
       "type": "object",
       "additionalProperties": true
+    },
+    "startupProbe": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "strategy": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tolerations": {
+      "type": "array"
     }
   },
   "additionalProperties": false,
