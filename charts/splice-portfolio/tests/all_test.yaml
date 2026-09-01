@@ -34,6 +34,36 @@ tests:
     asserts:
       - isKind:
           of: Deployment
+      - isNull:
+          path: spec.template.spec.nodeSelector
+      - isNull:
+          path: spec.template.spec.affinity
+      - isNull:
+          path: spec.template.spec.tolerations
+  - it: should render scheduling values
+    templates:
+      - deployment.yaml
+    values:
+      - scheduling_values.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector.agentpool
+          value: app
+      - equal:
+          path: spec.template.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[0].matchExpressions
+          value:
+            - key: cn_apps
+              operator: Exists
+            - key: cn_apps
+              operator: In
+              values:
+                - hyperdisk
+      - contains:
+          path: spec.template.spec.tolerations
+          content:
+            key: cn_apps
+            operator: Exists
+            effect: NoSchedule
   - it: should render a service
     templates:
       - service.yaml
