@@ -2,6 +2,14 @@ image:
   repo: ghcr.io/digital-asset/splice-portfolio/docker
   tag: ""
 
+# @schema additionalProperties: true
+nodeSelector: {}
+
+# @schema additionalProperties: true
+affinity: {}
+
+tolerations: []
+
 config:
   amulet:
     validatorUrl: "http://localhost:2000/api/validator" # @schema required

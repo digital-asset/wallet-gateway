@@ -2,6 +2,10 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {
+        "affinity": {
+            "type": "object",
+            "additionalProperties": true
+        },
         "config": {
             "type": "object",
             "properties": {
@@ -76,6 +80,13 @@
                 }
             },
             "additionalProperties": false
+        },
+        "nodeSelector": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "tolerations": {
+            "type": "array"
         }
     },
     "additionalProperties": false
