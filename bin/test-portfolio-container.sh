@@ -21,12 +21,12 @@ timeout 60 bash -c "
 "
 
 # SPA fallback must serve the connect route with a 200
-status=$(curl --silent --output /dev/null --write-out '%{http_code}' "http://localhost:$PORT/next/connect")
+status=$(curl --silent --output /dev/null --write-out '%{http_code}' "http://localhost:$PORT/connect")
 if [[ "$status" != "200" ]]; then
-  echo "Expected 200 from /next/connect, got $status" >&2
+  echo "Expected 200 from /connect, got $status" >&2
   exit 1
 fi
-echo "/next/connect returned 200"
+echo "/connect returned 200"
 
 # Runtime config must be served
 curl --fail --silent --output /dev/null "http://localhost:$PORT/config.json"
