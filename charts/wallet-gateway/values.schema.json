@@ -850,6 +850,23 @@
           },
           "additionalProperties": false
         },
+        "hashingScheme": {
+          "type": "object",
+          "required": [
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "description": "Hashing scheme version for the ledger. If omitted, defaults to HASHING_SCHEME_VERSION_V3",
+              "type": "string",
+              "enum": [
+                "HASHING_SCHEME_VERSION_V2",
+                "HASHING_SCHEME_VERSION_V3"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
         "kernel": {
           "type": "object",
           "required": [
@@ -1018,7 +1035,7 @@
           ],
           "properties": {
             "connection": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "object",
                   "required": [
@@ -1048,36 +1065,72 @@
                   "additionalProperties": false
                 },
                 {
-                  "type": "object",
-                  "required": [
-                    "type",
-                    "host",
-                    "port",
-                    "user",
-                    "password",
-                    "database"
-                  ],
-                  "properties": {
-                    "database": {
-                      "type": "string"
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "host",
+                        "port",
+                        "user",
+                        "password",
+                        "database"
+                      ],
+                      "properties": {
+                        "database": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "type": {
+                          "const": "postgres"
+                        },
+                        "user": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
                     },
-                    "host": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "port": {
-                      "type": "number"
-                    },
-                    "type": {
-                      "const": "postgres"
-                    },
-                    "user": {
-                      "type": "string"
+                    {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "host",
+                        "port",
+                        "user",
+                        "passwordEnv",
+                        "database"
+                      ],
+                      "properties": {
+                        "database": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "passwordEnv": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "type": {
+                          "const": "postgres"
+                        },
+                        "user": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
                     }
-                  },
-                  "additionalProperties": {}
+                  ]
                 }
               ]
             }
@@ -1091,7 +1144,7 @@
           ],
           "properties": {
             "connection": {
-              "oneOf": [
+              "anyOf": [
                 {
                   "type": "object",
                   "required": [
@@ -1121,36 +1174,72 @@
                   "additionalProperties": false
                 },
                 {
-                  "type": "object",
-                  "required": [
-                    "type",
-                    "host",
-                    "port",
-                    "user",
-                    "password",
-                    "database"
-                  ],
-                  "properties": {
-                    "database": {
-                      "type": "string"
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "host",
+                        "port",
+                        "user",
+                        "password",
+                        "database"
+                      ],
+                      "properties": {
+                        "database": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "type": {
+                          "const": "postgres"
+                        },
+                        "user": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
                     },
-                    "host": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "port": {
-                      "type": "number"
-                    },
-                    "type": {
-                      "const": "postgres"
-                    },
-                    "user": {
-                      "type": "string"
+                    {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "host",
+                        "port",
+                        "user",
+                        "passwordEnv",
+                        "database"
+                      ],
+                      "properties": {
+                        "database": {
+                          "type": "string"
+                        },
+                        "host": {
+                          "type": "string"
+                        },
+                        "passwordEnv": {
+                          "type": "string"
+                        },
+                        "port": {
+                          "type": "number"
+                        },
+                        "type": {
+                          "const": "postgres"
+                        },
+                        "user": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
                     }
-                  },
-                  "additionalProperties": {}
+                  ]
                 }
               ]
             }
