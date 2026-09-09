@@ -841,6 +841,7 @@
                   "synchronizerId": {
                     "type": "string",
                     "pattern": "::",
+                    "format": "includes",
                     "minLength": 10
                   }
                 },
