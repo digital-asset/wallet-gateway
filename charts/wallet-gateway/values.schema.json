@@ -230,6 +230,22 @@
                     "type": "object",
                     "required": [
                       "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "const": "self_issued"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "id",
                       "type",
                       "issuer",
                       "configUrl"
@@ -282,6 +298,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -307,12 +324,17 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
                                 "type": "string"
                               },
                               "clientSecret": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -336,6 +358,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -349,6 +372,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
@@ -371,6 +415,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -402,6 +447,10 @@
                                 "type": "string"
                               },
                               "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -438,6 +487,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
@@ -464,6 +534,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -489,12 +560,17 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
                                 "type": "string"
                               },
                               "clientSecret": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -518,6 +594,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -531,6 +608,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
@@ -553,6 +651,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -584,6 +683,10 @@
                                 "type": "string"
                               },
                               "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -620,6 +723,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
@@ -671,6 +795,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -696,12 +821,17 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
                                 "type": "string"
                               },
                               "clientSecret": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -725,6 +855,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -738,6 +869,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
@@ -760,6 +912,7 @@
                             ],
                             "properties": {
                               "audience": {
+                                "description": "Participant ID prefixed with \"https://daml.com/jwt/aud/participant/\".",
                                 "type": "string"
                               },
                               "clientId": {
@@ -791,6 +944,10 @@
                                 "type": "string"
                               },
                               "clientSecretEnv": {
+                                "type": "string"
+                              },
+                              "identityProviderId": {
+                                "description": "Overrides the network's identity provider for client credentials token acquisition.",
                                 "type": "string"
                               },
                               "method": {
@@ -827,6 +984,27 @@
                               },
                               "method": {
                                 "const": "self_signed"
+                              },
+                              "scope": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "required": [
+                              "method",
+                              "audience",
+                              "scope"
+                            ],
+                            "properties": {
+                              "audience": {
+                                "description": "Only participant ID, with no https://daml.com/jwt/aud/participant/ prefix (unlike the other auth methods).",
+                                "type": "string"
+                              },
+                              "method": {
+                                "const": "self_issued"
                               },
                               "scope": {
                                 "type": "string"
