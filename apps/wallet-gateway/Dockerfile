@@ -1,4 +1,4 @@
-FROM node:24.14-alpine3.22
+FROM node:24.21-alpine3.24
 USER node:node
 WORKDIR /app
 
