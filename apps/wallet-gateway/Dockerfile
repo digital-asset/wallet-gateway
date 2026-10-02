@@ -1,4 +1,5 @@
 FROM node:24.14-alpine3.22
+RUN apk add --no-cache python3 make g++
 USER node:node
 WORKDIR /app
 
