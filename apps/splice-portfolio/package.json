@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@canton-network/example-portfolio": "1.13.0"
+  },
+  "allowScripts": {
+    "fsevents": false
+  }
+}

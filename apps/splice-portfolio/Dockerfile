@@ -1,9 +1,7 @@
-FROM node:alpine AS builder
+FROM node:24 AS builder
 WORKDIR /app
-ARG version=REQUIRED
-RUN npm install "@canton-network/example-portfolio@${version}"
-
-
+COPY ./apps/splice-portfolio/package.json ./apps/splice-portfolio/package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts
 
 FROM nginx:alpine
 

@@ -10,7 +10,7 @@ jobs:
   check:
     runs-on: digital-asset-wallet-gateway
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: helm unittest charts/splice-portfolio
       - run: ./bin/helm-gen splice-portfolio
       - run: ./.github/scripts/git-dirty-check
@@ -23,10 +23,10 @@ jobs:
     needs:
       - check
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -48,12 +48,11 @@ jobs:
 
         # Build first for testing (no publish): https://docs.docker.com/build/ci/github-actions/test-before-push/
       - name: Build and export to Docker
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         id: docker-export
         with:
           context: .
           file: ./apps/splice-portfolio/Dockerfile
-          build-args: version=${{ steps.versions.outputs.stable }}
           load: true
 
       - name: Test container serves portfolio
@@ -61,18 +60,16 @@ jobs:
 
       # Setup buildx for multi-platform
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
       # Publish the docker image
       - name: Docker Build and Publish
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: ./apps/splice-portfolio/Dockerfile
-          # Always use the stable version to pull down the npm package
-          build-args: version=${{ steps.versions.outputs.stable }}
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.tags.outputs.tags }}
@@ -85,7 +82,7 @@ jobs:
     needs:
       - check
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Helm Build and Publish
         uses: ./.github/actions/helm-build-push
