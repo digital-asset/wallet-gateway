@@ -1,6 +1,6 @@
 let
-  rev = "a7f6fb78c74c145ed8210f0ac9d6a3fb595ba92f";
-  sha256 = "09xpkn3m6ckvcm5v1nvnrs37ayay3wiivnnpcrnfms90mq9m84na";
+  rev = "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36";
+  sha256 = "0hlv2n0gcpcxmjka021806iswd7mlmpq1gpnvff2mr2fmmyx2nrj";
 
   nixPkgs = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/${rev}.tar.gz";
@@ -24,7 +24,7 @@ nixPkgs.mkShell (
       kubeconform
       kubectl
       nixfmt-rfc-style
-      nodejs_22
+      nodejs_24
       unixtools.watch
     ];
   }
