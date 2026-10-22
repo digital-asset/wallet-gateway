@@ -1,5 +1,5 @@
 let
-  rev = "a7f6fb78c74c145ed8210f0ac9d6a3fb595ba92f";
+  rev = "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36";
   sha256 = "09xpkn3m6ckvcm5v1nvnrs37ayay3wiivnnpcrnfms90mq9m84na";
 
   nixPkgs = import (builtins.fetchTarball {
@@ -24,7 +24,7 @@ nixPkgs.mkShell (
       kubeconform
       kubectl
       nixfmt-rfc-style
-      nodejs_22
+      nodejs_24
       unixtools.watch
     ];
   }
