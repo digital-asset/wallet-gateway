@@ -1,0 +1,80 @@
+{
+    "kernel": {
+        "id": "remote-da",
+        "clientType": "remote"
+    },
+    "logging": {
+        "level": "debug",
+        "format": "pretty"
+    },
+    "server": {
+        "host": "localhost",
+        "port": 3030,
+        "tls": false,
+        "dappPath": "/api/v0/dapp",
+        "userPath": "/api/v0/user",
+        "allowedOrigins": [
+            "http://localhost:8080",
+            "http://localhost:8081",
+            "http://localhost:8082"
+        ],
+        "admin": "operator"
+    },
+    "store": {
+        "connection": {
+            "type": "sqlite",
+            "database": "store.sqlite"
+        }
+    },
+    "signingStore": {
+        "connection": {
+            "type": "sqlite",
+            "database": "signingStore.sqlite"
+        }
+    },
+    "bootstrap": {
+        "idps": [
+            {
+                "id": "idp-mock-oauth",
+                "type": "oauth",
+                "issuer": "http://127.0.0.1:8889",
+                "configUrl": "http://127.0.0.1:8889/.well-known/openid-configuration"
+            }
+        ],
+        "networks": [
+            {
+                "id": "canton:local-oauth",
+                "name": "Local (OAuth IDP)",
+                "description": "Mock OAuth IDP",
+                "synchronizerId": "wallet::1220e7b23ea52eb5c672fb0b1cdbc916922ffed3dd7676c223a605664315e2d43edd",
+                "identityProviderId": "idp-mock-oauth",
+                "auth": {
+                    "method": "authorization_code",
+                    "clientId": "operator",
+                    "scope": "openid email daml_ledger_api offline_access",
+                    "audience": "https://daml.com/jwt/aud/participant/participant1::1220d44fc1c3ba0b5bdf7b956ee71bc94ebe2d23258dc268fdf0824fbaeff2c61424"
+                },
+                "adminAuth": {
+                    "method": "client_credentials",
+                    "scope": "daml_ledger_api",
+                    "audience": "https://daml.com/jwt/aud/participant/participant1::1220d44fc1c3ba0b5bdf7b956ee71bc94ebe2d23258dc268fdf0824fbaeff2c61424",
+                    "clientId": "participant_admin",
+                    "clientSecret": "admin-client-secret"
+                },
+                "serviceAccountAuth": {
+                    "method": "client_credentials",
+                    "scope": "daml_ledger_api",
+                    "audience": "https://daml.com/jwt/aud/participant/participant1::1220d44fc1c3ba0b5bdf7b956ee71bc94ebe2d23258dc268fdf0824fbaeff2c61424",
+                    "clientId": "service_account",
+                    "clientSecret": "service-account-secret"
+                },
+                "ledgerApi": {
+                    "baseUrl": "http://127.0.0.1:5003"
+                }
+            }
+        ]
+    },
+    "hashingScheme": {
+        "version": "HASHING_SCHEME_VERSION_V3"
+    }
+}
