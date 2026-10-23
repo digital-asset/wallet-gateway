@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "@canton-network/wallet-gateway-remote": "1.13.0"
+  },
+  "allowScripts": {
+    "better-sqlite3": false,
+    "cbor-extract": false,
+    "esbuild": false,
+    "fsevents": false,
+    "secp256k1": false
   }
 }

@@ -1,0 +1,43 @@
+version: 2
+updates:
+    - package-ecosystem: 'npm'
+      directories:
+          - '/apps/wallet-gateway'
+          - '/apps/splice-portfolio'
+      versioning-strategy: 'increase'
+      schedule:
+          interval: 'weekly'
+      ignore:
+          # Pinned via apps/<app>/VERSION and bumped with bin/bump
+          - dependency-name: '@canton-network/wallet-gateway-remote'
+          - dependency-name: '@canton-network/example-portfolio'
+      groups:
+          minor-and-patch:
+              update-types:
+                  - 'minor'
+                  - 'patch'
+    - package-ecosystem: 'docker'
+      directories:
+          - '/apps/wallet-gateway'
+          - '/apps/splice-portfolio'
+      schedule:
+          interval: 'weekly'
+      ignore:
+          # Stay on the current Node.js LTS line
+          - dependency-name: 'node'
+            update-types:
+                - 'version-update:semver-major'
+      groups:
+          docker:
+              patterns:
+                  - '*'
+    - package-ecosystem: 'github-actions'
+      directories:
+          - '/'
+          - '/.github/actions/*'
+      schedule:
+          interval: 'weekly'
+      groups:
+          github-actions:
+              patterns:
+                  - '*'
