@@ -58,6 +58,14 @@ jobs:
       - name: Test container serves portfolio
         run: ./bin/test-portfolio-container.sh ${{ steps.docker-export.outputs.imageid }}
 
+      - name: Scan container with Black Duck
+        uses: ./.github/actions/blackduck-scan
+        with:
+          name: splice-portfolio
+          image: ${{ steps.docker-export.outputs.imageid }}
+          version: ${{ steps.versions.outputs.unstable }}
+          token: ${{ secrets.DA_BLACKDUCK }}
+
       # Setup buildx for multi-platform
       - name: Set up QEMU
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0

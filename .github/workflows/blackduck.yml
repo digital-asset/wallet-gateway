@@ -1,0 +1,47 @@
+name: blackduck
+
+on:
+    workflow_dispatch:
+
+jobs:
+    blackduck:
+        runs-on: digital-asset-wallet-gateway
+        strategy:
+            fail-fast: false
+            matrix:
+                app:
+                    - wallet-gateway
+                    - splice-portfolio
+        permissions:
+            contents: read
+            packages: read
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Pull published image
+              id: image
+              shell: bash
+              env:
+                  APP: ${{ matrix.app }}
+              run: |
+                  version=$(<"apps/${APP}/VERSION")
+                  image="ghcr.io/digital-asset/${APP}/docker/${APP}:v${version}"
+                  docker pull "$image"
+                  echo "image=$image" >> "$GITHUB_OUTPUT"
+                  echo "version=$version" >> "$GITHUB_OUTPUT"
+
+            - name: Scan container with Black Duck
+              uses: ./.github/actions/blackduck-scan
+              with:
+                  name: ${{ matrix.app }}
+                  image: ${{ steps.image.outputs.image }}
+                  version: ${{ steps.image.outputs.version }}
+                  token: ${{ secrets.DA_BLACKDUCK }}

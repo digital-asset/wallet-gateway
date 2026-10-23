@@ -10,6 +10,12 @@ Commits on `main` create new release artifacts if they don't already exist yet u
 2. Run `bin/bump <app>` to update the lockfile and helm schema
 3. Create a PR, have it approved, and merge it into `main`
 
+## Black Duck container scans
+
+Container images are scanned with Black Duck on build using the shared
+[scan action](.github/actions/blackduck-scan/action.yaml). To scan both published
+images manually, dispatch the [standalone workflow](.github/workflows/blackduck.yml).
+
 ## Testing locally
 
 From the `canton-network/wallet` repo:
