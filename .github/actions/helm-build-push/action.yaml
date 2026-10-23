@@ -57,12 +57,12 @@ runs:
       shell: nix-shell ${{ github.action_path }}/shell.nix --run "exec bash -euo pipefail {0}"
       run: ${{ github.action_path }}/helm-build-push.sh
     - name: Upload Unstable Chart
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: unstable-chart
         path: ${{ steps.build-push.outputs.unstable-package }}
     - name: Upload Stable Chart
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       if: ${{ steps.build-push.outputs.stable-package != '' }}
       with:
         name: stable-chart
