@@ -63,7 +63,8 @@ jobs:
         with:
           name: wallet-gateway
           image: ${{ steps.docker-export.outputs.imageid }}
-          version: ${{ steps.versions.outputs.unstable }}
+          stable-tags: ${{ steps.tags.outputs.tags-stable }}
+          version: ${{ steps.versions.outputs.stable }}
           token: ${{ secrets.DA_BLACKDUCK }}
 
       # Setup buildx for multi-platform

@@ -9,8 +9,14 @@ inputs:
     description: Local Docker image ID or tag to scan
     required: true
   version:
-    description: Image version to record in Black Duck as <name>/<version>
-    required: true
+    description: Stable image version, used by ci-release as <name>/<version>
+    default: ""
+  branch:
+    description: Source branch, used by ci-build as <name>/<branch>
+    default: ${{ github.ref_name }}
+  stable-tags:
+    description: Stable tags being published; empty for unstable builds
+    default: ""
   token:
     description: Black Duck API token
     required: true
@@ -39,19 +45,26 @@ runs:
         SCAN_NAME: ${{ inputs.name }}
         SCAN_IMAGE: ${{ inputs.image }}
         SCAN_VERSION: ${{ inputs.version }}
+        SCAN_BRANCH: ${{ inputs.branch }}
+        STABLE_TAGS: ${{ inputs.stable-tags }}
         SCAN_DIR: ${{ steps.prepare.outputs.directory }}
       run: |
-        : "${BLACKDUCK_HUBDETECT_TOKEN:?Black Duck API token is required}"
-        # Too many false positives with BLOCKER/CRITICAL, so we set it to NONE for now
-        # policy_severities=BLOCKER,CRITICAL
+        if [ -n "$STABLE_TAGS" ]; then
+          scan_type=ci-release
+          scan_ref="${SCAN_NAME}/${SCAN_VERSION}"
+        else
+          scan_type=ci-build
+          scan_ref="${SCAN_NAME}/${SCAN_BRANCH}"
+        fi
+        # Too many false positives, so we set it to NONE for now
+        # policy_severities=MAJOR,CRITICAL,BLOCKER
         policy_severities=NONE
-        trap 'rm -f -- "$SCAN_DIR/image.tar" "$SCAN_DIR/synopsys-detect"' EXIT
+        trap 'rm -f -- "$SCAN_DIR/image.tar"' EXIT
         docker image save "$SCAN_IMAGE" -o "$SCAN_DIR/image.tar"
         curl --fail --silent --show-error --location --retry 3 \
-          https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect \
-          -o "$SCAN_DIR/synopsys-detect"
-        bash "$SCAN_DIR/synopsys-detect" \
-          ci-build "$GITHUB_REPOSITORY" "${SCAN_NAME}/${SCAN_VERSION}" \
+          https://raw.githubusercontent.com/DACH-NY/security-blackduck/master/synopsys-detect |
+          bash -s -- \
+          "$scan_type" "$GITHUB_REPOSITORY" "$scan_ref" \
           --logging.level.com.synopsys.integration=DEBUG \
           --detect.notices.report=true \
           --detect.notices.report.path="$SCAN_DIR/reports" \

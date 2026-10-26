@@ -13,8 +13,10 @@ Commits on `main` or on a `release-*` / `release/*` branch create new release ar
 ## Black Duck container scans
 
 Container images are scanned with Black Duck on build using the shared
-[scan action](.github/actions/blackduck-scan/action.yaml). To scan both published
-images manually, dispatch the [standalone workflow](.github/workflows/blackduck.yml).
+[scan action](.github/actions/blackduck-scan/action.yaml). New stable releases use
+`ci-release` with the stable version; other builds use `ci-build` with the branch
+name. Black Duck versions are recorded as `<app>/<version>` for releases and
+`<app>/<branch>` for other builds.
 
 ## Testing locally
 
