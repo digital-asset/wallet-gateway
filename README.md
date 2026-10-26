@@ -13,8 +13,31 @@ Commits on `main` or on a `release-*` / `release/*` branch create new release ar
 ## Black Duck container scans
 
 Container images are scanned with Black Duck on build using the shared
-[scan action](.github/actions/blackduck-scan/action.yaml). To scan both published
-images manually, dispatch the [standalone workflow](.github/workflows/blackduck.yml).
+[scan action](.github/actions/blackduck-scan/action.yaml). New stable releases use
+`ci-release` with the stable version; other builds use `ci-build` with the branch
+name. Black Duck versions are recorded as `<app>/<version>` for releases and
+`<app>/<branch>` for other builds.
+
+## Nightly source builds
+
+The [nightly workflow](.github/workflows/nightly.yaml) runs daily at 23:23 UTC and can also be dispatched manually. It checks out the latest `main` from
+`canton-network/wallet` once, generates the required code, and builds Wallet
+Gateway, Splice Portfolio, and their workspace dependencies directly from source.
+
+After the smoke tests and Black Duck scans succeed, it publishes floating tags:
+
+- `ghcr.io/digital-asset/wallet-gateway-unstable/docker/wallet-gateway:nightly`
+- `ghcr.io/digital-asset/splice-portfolio-unstable/docker/splice-portfolio:nightly`
+
+Both images use the same upstream commit, recorded in the workflow summary.
+To build locally from an upstream checkout:
+
+```shell
+docker build --build-context wallet=/path/to/wallet \
+  -f apps/Dockerfile.nightly --target wallet-gateway -t wallet-gateway:nightly .
+docker build --build-context wallet=/path/to/wallet \
+  -f apps/Dockerfile.nightly --target splice-portfolio -t splice-portfolio:nightly .
+```
 
 ## Testing locally
 

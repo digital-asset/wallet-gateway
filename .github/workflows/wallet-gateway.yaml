@@ -56,14 +56,15 @@ jobs:
           load: true
 
       - name: Test container initializes successfully
-        run: ./bin/test-container-init.sh ${{ steps.versions.outputs.stable }} ${{ steps.docker-export.outputs.imageid }}
+        run: ./bin/test-container-init.sh ${{ steps.docker-export.outputs.imageid }}
 
       - name: Scan container with Black Duck
         uses: ./.github/actions/blackduck-scan
         with:
           name: wallet-gateway
           image: ${{ steps.docker-export.outputs.imageid }}
-          version: ${{ steps.versions.outputs.unstable }}
+          stable-tags: ${{ steps.tags.outputs.tags-stable }}
+          version: ${{ steps.versions.outputs.stable }}
           token: ${{ secrets.DA_BLACKDUCK }}
 
       # Setup buildx for multi-platform
