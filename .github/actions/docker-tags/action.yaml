@@ -18,7 +18,7 @@ inputs:
     required: false
   release-branches:
     description: List of branche names considered for stable releases (space separated)
-    default: main master release- release/
+    default: main master release-* release/*
     required: false
 
 outputs:
@@ -27,7 +27,7 @@ outputs:
     value: ${{ steps.calc.outputs.tags-unstable }}
   tags-stable:
     description: The stable docker tags. NOTE, this is empty unless the current branch is one of the release-branches AND the stable docker image doesn't already exist in in the stable registry.
-    value: ${{ steps.calc.outputs.tags-unstable }}
+    value: ${{ steps.calc.outputs.tags-stable }}
   tags:
     description: A combination of both unstable and stable tags
     value: ${{ steps.calc.outputs.tags }}

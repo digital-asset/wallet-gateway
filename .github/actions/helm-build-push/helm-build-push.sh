@@ -104,7 +104,9 @@ build-push UNSTABLE
 # package doesn't already exist
 
 # Check if we are on a release branch
+set -f
 for branch in ${RELEASE_BRANCHES}; do
+  # shellcheck disable=SC2053 # intentional glob match
   if [[ "${GITHUB_REF_NAME}" == ${branch} ]]; then
     echo "Release branch detected: ${GITHUB_REF_NAME}"
 
@@ -117,3 +119,4 @@ for branch in ${RELEASE_BRANCHES}; do
     break
   fi
 done
+set +f
