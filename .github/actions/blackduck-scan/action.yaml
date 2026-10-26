@@ -1,9 +1,9 @@
 name: Black Duck Container Scan
-description: Scans a local Docker image and publishes its notices report
+description: Scans a local Docker image with Black Duck
 
 inputs:
   name:
-    description: Application name, used to separate Black Duck versions and report artifacts
+    description: Application name, used to separate Black Duck versions
     required: true
   image:
     description: Local Docker image ID or tag to scan
@@ -38,7 +38,6 @@ runs:
       shell: bash
       run: |
         directory=$(mktemp -d "${RUNNER_TEMP}/blackduck.XXXXXX")
-        mkdir "$directory/reports"
         echo "directory=$directory" >> "$GITHUB_OUTPUT"
 
     - name: Scan Docker image
@@ -67,42 +66,8 @@ runs:
           bash -s -- \
           "$scan_type" "$GITHUB_REPOSITORY" "$scan_ref" \
           --logging.level.com.synopsys.integration=DEBUG \
-          --detect.notices.report=true \
-          --detect.notices.report.path="$SCAN_DIR/reports" \
           --detect.timeout=600 \
           --detect.policy.check.fail.on.severities="$POLICY_SEVERITIES" \
           --detect.tools=CONTAINER_SCAN \
           --detect.tools.excluded=DETECTOR,SIGNATURE_SCAN \
           --detect.container.scan.file.path="$SCAN_DIR/image.tar"
-
-    - name: Add notices report to job summary
-      if: always() && steps.prepare.outcome == 'success'
-      shell: bash
-      env:
-        SCAN_DIR: ${{ steps.prepare.outputs.directory }}
-      run: |
-        shopt -s nullglob
-        reports=("$SCAN_DIR"/reports/*Notices_Report*)
-        if [ ${#reports[@]} -eq 0 ]; then
-          echo "No Black Duck notices report was generated." >> "$GITHUB_STEP_SUMMARY"
-          exit 0
-        fi
-        {
-          echo "## Black Duck Notices Report"
-          echo "<details><summary>${reports[0]##*/}</summary>"
-          echo
-          echo '```'
-          # Job summaries are limited to 1 MiB; the full reports are in the artifact.
-          head -c 900000 "${reports[0]}"
-          echo
-          echo '```'
-          echo "</details>"
-        } >> "$GITHUB_STEP_SUMMARY"
-
-    - name: Upload notices reports
-      if: always() && steps.prepare.outcome == 'success'
-      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-      with:
-        name: blackduck-notices-report-${{ inputs.name }}
-        path: ${{ steps.prepare.outputs.directory }}/reports/
-        if-no-files-found: warn
