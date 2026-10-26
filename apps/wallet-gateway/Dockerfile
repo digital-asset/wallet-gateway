@@ -1,4 +1,4 @@
-FROM node:24 AS build
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.17 AS build
 WORKDIR /app
 COPY ./apps/wallet-gateway/package.json ./apps/wallet-gateway/package-lock.json ./
 RUN npm ci --omit=dev

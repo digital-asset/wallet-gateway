@@ -1,9 +1,9 @@
-FROM node:24 AS builder
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.17 AS builder
 WORKDIR /app
 COPY ./apps/splice-portfolio/package.json ./apps/splice-portfolio/package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts
 
-FROM nginx:alpine
+FROM nginx:1.31.8-alpine-slim
 
 RUN rm -rf /usr/share/nginx/html/*
 
