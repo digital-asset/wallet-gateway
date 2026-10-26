@@ -17,6 +17,9 @@ inputs:
   stable-tags:
     description: Stable tags being published; empty for unstable builds
     default: ""
+  policy-severities:
+    description: Policy violation severities that fail the scan (NONE disables enforcement)
+    default: NONE
   token:
     description: Black Duck API token
     required: true
@@ -47,6 +50,7 @@ runs:
         SCAN_VERSION: ${{ inputs.version }}
         SCAN_BRANCH: ${{ inputs.branch }}
         STABLE_TAGS: ${{ inputs.stable-tags }}
+        POLICY_SEVERITIES: ${{ inputs.policy-severities }}
         SCAN_DIR: ${{ steps.prepare.outputs.directory }}
       run: |
         if [ -n "$STABLE_TAGS" ]; then
@@ -56,9 +60,6 @@ runs:
           scan_type=ci-build
           scan_ref="${SCAN_NAME}/${SCAN_BRANCH}"
         fi
-        # Too many false positives, so we set it to NONE for now
-        # policy_severities=MAJOR,CRITICAL,BLOCKER
-        policy_severities=NONE
         trap 'rm -f -- "$SCAN_DIR/image.tar"' EXIT
         docker image save "$SCAN_IMAGE" -o "$SCAN_DIR/image.tar"
         curl --fail --silent --show-error --location --retry 3 \
@@ -69,7 +70,7 @@ runs:
           --detect.notices.report=true \
           --detect.notices.report.path="$SCAN_DIR/reports" \
           --detect.timeout=600 \
-          --detect.policy.check.fail.on.severities="$policy_severities" \
+          --detect.policy.check.fail.on.severities="$POLICY_SEVERITIES" \
           --detect.tools=CONTAINER_SCAN \
           --detect.tools.excluded=DETECTOR,SIGNATURE_SCAN \
           --detect.container.scan.file.path="$SCAN_DIR/image.tar"

@@ -56,7 +56,7 @@ jobs:
           load: true
 
       - name: Test container initializes successfully
-        run: ./bin/test-container-init.sh ${{ steps.versions.outputs.stable }} ${{ steps.docker-export.outputs.imageid }}
+        run: ./bin/test-container-init.sh ${{ steps.docker-export.outputs.imageid }}
 
       - name: Scan container with Black Duck
         uses: ./.github/actions/blackduck-scan

@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="$1"
-IMAGEID="$2"
+IMAGEID="$1"
 
-# Generate a default config file for the current version
-npx --yes @canton-network/wallet-gateway-remote@$VERSION --config-example > config.json
+# Generate config from the image being tested, including unpublished builds.
+docker run --rm "$IMAGEID" --config-example > config.json
 
 sed -i 's/clientSecretEnv/clientSecret/g' config.json
 
