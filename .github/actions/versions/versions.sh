@@ -10,13 +10,19 @@ fi
 
 version_file="$(<"apps/${name}/VERSION")"
 
-# Bump the patch version
-minor_bump="$(awk -F. '{s=$3; sub(/^[0-9]+/, "", s); print $1"."$2"."($3+1)s}' "apps/${name}/VERSION")"
+# Base for the unstable version.
+# - Plain X.Y.Z:         bump the patch (1.13.0 -> 1.13.1)
+# - Prerelease/backport: keep the version verbatim (1.11.3-backport.3)
+if [[ "${version_file}" == *-* ]]; then
+    unstable_base="${version_file}"
+else
+    unstable_base="$(awk -F. '{print $1"."$2"."($3+1)}' "apps/${name}/VERSION")"
+fi
 
 # Get the commit date
 commit_date="$(git log -n1 --format=%cd --date=format:%Y%m%d)"
 
-printf -v unstable '%s-snapshot.%s.%s.0.v%s' "${minor_bump}" "${commit_date}" "${GITHUB_RUN_NUMBER}" "${GITHUB_SHA:0:8}"
+printf -v unstable '%s-snapshot.%s.%s.0.v%s' "${unstable_base}" "${commit_date}" "${GITHUB_RUN_NUMBER}" "${GITHUB_SHA:0:8}"
 
 # Export outputs
 cat <<EOF | tee -a "${GITHUB_OUTPUT}"
