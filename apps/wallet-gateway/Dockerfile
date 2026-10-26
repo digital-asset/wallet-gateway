@@ -3,6 +3,8 @@ FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.17 AS 
 FROM node AS build
 WORKDIR /app
 COPY ./apps/wallet-gateway/package.json ./apps/wallet-gateway/package-lock.json ./
+# for building native modules like better-sqlite3, not needed in WG 1.13.0+
+RUN apk add python make gcc g++
 RUN npm ci --omit=dev
 
 FROM node
