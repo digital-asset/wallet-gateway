@@ -1,5 +1,6 @@
 FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node
-FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-slim-1.0.18 AS node-slim
+# TODO node-slim once stable version is published
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node-slim
 
 FROM node AS build
 WORKDIR /app
