@@ -1,5 +1,5 @@
 FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node
-FROM nginx:1.31.8-alpine-slim AS nginx
+FROM nginx/nginx-unprivileged:1.31.8-alpine-slim AS nginx
 
 FROM node AS build
 WORKDIR /app
@@ -8,7 +8,9 @@ RUN npm ci --omit=dev --ignore-scripts
 
 FROM nginx
 
+USER root
 RUN rm -rf /usr/share/nginx/html/*
+USER 101:101
 
 COPY --from=build /app/node_modules/@canton-network/example-portfolio/dist /usr/share/nginx/html/
 
@@ -17,6 +19,6 @@ COPY --from=build /app/node_modules/@canton-network/example-portfolio/dist /usr/
 
 COPY apps/splice-portfolio/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
