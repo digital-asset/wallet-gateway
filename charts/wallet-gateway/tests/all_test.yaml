@@ -193,8 +193,14 @@ tests:
           path: spec.template.spec.tolerations
       - isNull:
           path: spec.template.spec.securityContext
-      - isNull:
+      - equal:
           path: spec.template.spec.containers[0].securityContext
+          value:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
   - it: should render scheduling security and extensibility values
     templates:
       - deployment.yaml
@@ -218,8 +224,14 @@ tests:
           path: spec.template.spec.securityContext.fsGroup
           value: 1000
       - equal:
-          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
-          value: true
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
       - contains:
           path: spec.template.spec.containers[0].env
           content:
@@ -262,6 +274,21 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].startupProbe.failureThreshold
           value: 30
+  - it: should allow overriding security defaults
+    templates:
+      - deployment.yaml
+    set:
+      containerSecurityContext.runAsNonRoot: false
+      containerSecurityContext.allowPrivilegeEscalation: true
+      containerSecurityContext.capabilities.drop: []
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop: []
   - it: should render a configmap (correctly)
     templates:
       - configmap.yaml

@@ -23,9 +23,16 @@ spec:
         - name: splice-portfolio
           image: "{{ .Values.image.repo }}/splice-portfolio:{{  .Values.image.tag | default (printf "v%s" .Chart.Version) }}"
           imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
           readinessProbe:
             httpGet:
               path: /
@@ -45,6 +52,9 @@ spec:
             - name: config
               mountPath: /usr/share/nginx/html/config.json
               subPath: config.json
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -58,6 +68,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
         - name: config
           configMap:
             name: "{{ .Release.Name }}-splice-portfolio-config-{{ $confHash }}"

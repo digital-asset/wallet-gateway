@@ -10,7 +10,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Start the container
 trap "docker rm -f splice-portfolio-test" EXIT
-docker run --name splice-portfolio-test -d -p $PORT:80 "$IMAGEID"
+docker run --name splice-portfolio-test -d -p "$PORT:8080" \
+  --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m,mode=1777 \
+  --cap-drop ALL --security-opt no-new-privileges "$IMAGEID"
 
 # Wait for nginx to serve the app
 timeout 60 bash -c "
@@ -19,6 +21,13 @@ timeout 60 bash -c "
     sleep 2
   done
 "
+
+# nginx must run unprivileged and keep its PID on the writable temporary mount.
+docker exec splice-portfolio-test sh -ec '
+  test "$(id -u)" -ne 0
+  test -s /tmp/nginx.pid
+  kill -0 "$(cat /tmp/nginx.pid)"
+'
 
 # SPA fallback must serve the connect route with a 200
 status=$(curl --silent --output /dev/null --write-out '%{http_code}' "http://localhost:$PORT/connect")

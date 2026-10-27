@@ -24,7 +24,13 @@ resources:
 podSecurityContext: {}
 
 # @schema additionalProperties: true
-containerSecurityContext: {}
+containerSecurityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  # @schema additionalProperties: true
+  capabilities:
+    drop:
+      - ALL
 
 extraEnv: []
 envFrom: []
