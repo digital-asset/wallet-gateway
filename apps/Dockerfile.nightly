@@ -1,5 +1,7 @@
-FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.17 AS node
-FROM nginx:1.31.8-alpine-slim AS nginx
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node
+# TODO node-slim once stable version is published
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node-slim
+FROM nginx/nginx-unprivileged:1.31.8-alpine-slim AS nginx
 FROM ghcr.io/pnpm/pnpm:12.15.0 AS pnpm
 
 FROM pnpm AS build
@@ -24,14 +26,16 @@ WORKDIR /gateway
 COPY --from=build /gateway/ ./
 RUN npm install --omit=dev
 
-FROM node AS wallet-gateway
+FROM node-slim AS wallet-gateway
 WORKDIR /app
 COPY --from=gateway-deploy --chown=nonroot:nonroot /gateway/node_modules ./node_modules
 ENTRYPOINT ["./node_modules/.bin/wallet-gateway-remote"]
 
 FROM nginx AS splice-portfolio
+USER root
 RUN rm -rf /usr/share/nginx/html/*
+USER 101:101
 COPY --from=build /source/examples/portfolio/dist/ /usr/share/nginx/html/
 COPY apps/splice-portfolio/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
