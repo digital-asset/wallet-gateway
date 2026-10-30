@@ -1,4 +1,4 @@
-FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.17 AS node
+FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.18 AS node
 
 FROM node AS build
 WORKDIR /app
