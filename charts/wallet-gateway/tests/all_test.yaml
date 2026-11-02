@@ -122,6 +122,59 @@ tests:
               secretKeyRef:
                 name: "dfns-creds"
                 key: "auth-token"
+  - it: should render client secrets for all auth blocks of bootstrap networks once
+    templates:
+      - deployment.yaml
+    values:
+      - bootstrap_secrets_values.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: SHARED_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "shared-secret"
+                key: "client-secret"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: ADMIN_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "admin-secret"
+                key: "client-secret"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: SERVICE_ACCOUNT_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "service-account-secret"
+                key: "client-secret"
+  - it: should fail when a clientSecretEnv is not mapped in oauthSecrets
+    templates:
+      - deployment.yaml
+    set:
+      config.bootstrap.networks:
+        - id: net-unmapped
+          name: Unmapped
+          description: References a secret missing from oauthSecrets
+          identityProviderId: idp-devnet
+          ledgerApi:
+            baseUrl: https://unmapped.example.com
+          auth:
+            method: client_credentials
+            scope: daml_ledger_api
+            audience: aud
+            clientId: user
+            clientSecretEnv: UNMAPPED_CLIENT_SECRET
+    asserts:
+      - failedTemplate:
+          errorPattern: "Environment variable 'UNMAPPED_CLIENT_SECRET' is requested in config but not defined in oauthSecrets"
   - it: should render a service
     templates:
       - service.yaml

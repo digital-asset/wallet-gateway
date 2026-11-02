@@ -107,16 +107,22 @@ spec:
             {{- end }}
             {{- end }}
 
-            {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
-            {{- range .Values.config.bootstrap.networks }}
-              {{- /* Create a list of the two auth blocks to check both */ -}}
-              {{- $authBlocks := list .auth .adminAuth -}}
-              {{- range $authBlocks }}
-                {{- if .clientSecretEnv }}
-                  {{- /* Pass 'root' as $ (global context) and the name of the env var */ -}}
-                  {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .clientSecretEnv) | nindent 12 }}
+            {{- /* dynamic env vars for oauth2 client secrets from networks (top-level and deprecated bootstrap) */ -}}
+            {{- $networks := concat (dig "networks" (list) .Values.config | default (list)) (dig "bootstrap" "networks" (list) .Values.config | default (list)) -}}
+            {{- /* Collect env var names in config order, each only once */ -}}
+            {{- $secretEnvs := list -}}
+            {{- range $networks }}
+              {{- range (list .auth .adminAuth .serviceAccountAuth) }}
+                {{- with . }}
+                  {{- if and .clientSecretEnv (not (has .clientSecretEnv $secretEnvs)) }}
+                    {{- $secretEnvs = append $secretEnvs .clientSecretEnv }}
+                  {{- end }}
                 {{- end }}
               {{- end }}
+            {{- end }}
+            {{- range $secretEnvs }}
+              {{- /* Pass 'root' as $ (global context) and the name of the env var */ -}}
+              {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .) | nindent 12 }}
             {{- end }}
 
             {{- with .Values.extraEnv }}
