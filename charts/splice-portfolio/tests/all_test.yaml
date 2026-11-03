@@ -34,6 +34,44 @@ tests:
     asserts:
       - isKind:
           of: Deployment
+      - equal:
+          path: spec.template.spec.containers[0].ports[0]
+          value:
+            name: http
+            containerPort: 8080
+      - equal:
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: tmp
+            mountPath: /tmp
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: tmp
+            emptyDir:
+              sizeLimit: 64Mi
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: config
+            mountPath: /usr/share/nginx/html/config.json
+            subPath: config.json
+            readOnly: true
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: http
       - isNull:
           path: spec.template.spec.nodeSelector
       - isNull:
@@ -70,6 +108,13 @@ tests:
     asserts:
       - isKind:
           of: Service
+      - equal:
+          path: spec.ports[0]
+          value:
+            name: http
+            protocol: TCP
+            targetPort: http
+            port: 80
   - it: should render a configmap (correctly)
     templates:
       - configmap.yaml

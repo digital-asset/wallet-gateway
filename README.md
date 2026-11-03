@@ -53,5 +53,7 @@ From this repo's root:
 5. Start the image (requires [host networking enabled](https://docs.docker.com/engine/network/drivers/host/)):
 
 ```shell
-docker run --init --rm -it --network host -v "$PWD/apps/wallet-gateway/config.test.json:/app/config.json" wg
+docker run --init --rm -it --network host \
+  --cap-drop ALL --security-opt no-new-privileges \
+  -v "$PWD/apps/wallet-gateway/config.test.json:/app/config.json:ro" wg
 ```
