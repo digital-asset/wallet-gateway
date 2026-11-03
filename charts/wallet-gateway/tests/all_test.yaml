@@ -122,6 +122,102 @@ tests:
               secretKeyRef:
                 name: "dfns-creds"
                 key: "auth-token"
+  - it: should render client secrets from config.networks without a bootstrap section
+    templates:
+      - deployment.yaml
+    set:
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.name: "my-secret"
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.key: "my-key"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: OAUTH2_DEVNET_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "my-secret"
+                key: "my-key"
+  - it: should render client secrets referenced from both config.networks and config.bootstrap.networks once
+    templates:
+      - deployment.yaml
+    values:
+      - both_sections_values.yaml
+    set:
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.name: "my-secret"
+      oauthSecrets.OAUTH2_DEVNET_CLIENT_SECRET.secretRef.key: "my-key"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: OAUTH2_DEVNET_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "my-secret"
+                key: "my-key"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: SERVICE_ACCOUNT_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "service-account-secret"
+                key: "client-secret"
+  - it: should render client secrets for all auth blocks of bootstrap networks once
+    templates:
+      - deployment.yaml
+    values:
+      - bootstrap_secrets_values.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: SHARED_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "shared-secret"
+                key: "client-secret"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: ADMIN_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "admin-secret"
+                key: "client-secret"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          count: 1
+          content:
+            name: SERVICE_ACCOUNT_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: "service-account-secret"
+                key: "client-secret"
+  - it: should fail when a clientSecretEnv is not mapped in oauthSecrets
+    templates:
+      - deployment.yaml
+    set:
+      config.networks:
+        - id: net-unmapped
+          name: Unmapped
+          description: References a secret missing from oauthSecrets
+          identityProviderId: idp-devnet
+          ledgerApi:
+            baseUrl: https://unmapped.example.com
+          auth:
+            method: client_credentials
+            scope: daml_ledger_api
+            audience: aud
+            clientId: user
+            clientSecretEnv: UNMAPPED_CLIENT_SECRET
+    asserts:
+      - failedTemplate:
+          errorPattern: "Environment variable 'UNMAPPED_CLIENT_SECRET' is requested in config but not defined in oauthSecrets"
   - it: should render a service
     templates:
       - service.yaml
@@ -299,75 +395,73 @@ tests:
           path: data["config.json"]
           value: |
             {
-              "bootstrap": {
-                "idps": [
-                  {
-                    "configUrl": "http://oauth.example.com/.well-known/openid-configuration",
-                    "id": "idp-devnet",
-                    "issuer": "\u003coauth_issuer\u003e",
-                    "type": "oauth"
-                  },
-                  {
-                    "id": "idp-local",
-                    "issuer": "unsafe-auth",
-                    "type": "self_signed"
-                  }
-                ],
-                "networks": [
-                  {
-                    "adminAuth": {
-                      "audience": "\u003coauth_audience\u003e",
-                      "clientId": "\u003coauth_admin_client_id\u003e",
-                      "clientSecretEnv": "OAUTH2_DEVNET_CLIENT_SECRET",
-                      "method": "client_credentials",
-                      "scope": "daml_ledger_api"
-                    },
-                    "auth": {
-                      "audience": "\u003coauth_audience\u003e",
-                      "clientId": "\u003coauth_user\u003e",
-                      "method": "authorization_code",
-                      "scope": "openid daml_ledger_api offline_access"
-                    },
-                    "description": "Connect to Canton DevNet",
-                    "id": "devnet",
-                    "identityProviderId": "idp-devnet",
-                    "ledgerApi": {
-                      "baseUrl": "https://devnet.example.com"
-                    },
-                    "name": "Canton DevNet (example)"
-                  },
-                  {
-                    "adminAuth": {
-                      "audience": "\u003clocal_audience\u003e",
-                      "clientId": "admin",
-                      "clientSecret": "unsafe",
-                      "issuer": "unsafe-auth",
-                      "method": "self_signed",
-                      "scope": "openid daml_ledger_api offline_access"
-                    },
-                    "auth": {
-                      "audience": "\u003clocal_audience\u003e",
-                      "clientId": "\u003clocal_user\u003e",
-                      "clientSecret": "unsafe",
-                      "issuer": "unsafe-auth",
-                      "method": "self_signed",
-                      "scope": "openid daml_ledger_api offline_access"
-                    },
-                    "description": "Connect to a local self-signed network",
-                    "id": "local",
-                    "identityProviderId": "idp-local",
-                    "ledgerApi": {
-                      "baseUrl": "http://localhost:3975"
-                    },
-                    "name": "Local (self-signed example)"
-                  }
-                ]
-              },
+              "idps": [
+                {
+                  "configUrl": "http://oauth.example.com/.well-known/openid-configuration",
+                  "id": "idp-devnet",
+                  "issuer": "\u003coauth_issuer\u003e",
+                  "type": "oauth"
+                },
+                {
+                  "id": "idp-local",
+                  "issuer": "unsafe-auth",
+                  "type": "self_signed"
+                }
+              ],
               "kernel": {
                 "clientType": "remote",
                 "id": "remote-da",
                 "publicUrl": "https://wallet.example.com"
               },
+              "networks": [
+                {
+                  "adminAuth": {
+                    "audience": "\u003coauth_audience\u003e",
+                    "clientId": "\u003coauth_admin_client_id\u003e",
+                    "clientSecretEnv": "OAUTH2_DEVNET_CLIENT_SECRET",
+                    "method": "client_credentials",
+                    "scope": "daml_ledger_api"
+                  },
+                  "auth": {
+                    "audience": "\u003coauth_audience\u003e",
+                    "clientId": "\u003coauth_user\u003e",
+                    "method": "authorization_code",
+                    "scope": "openid daml_ledger_api offline_access"
+                  },
+                  "description": "Connect to Canton DevNet",
+                  "id": "devnet",
+                  "identityProviderId": "idp-devnet",
+                  "ledgerApi": {
+                    "baseUrl": "https://devnet.example.com"
+                  },
+                  "name": "Canton DevNet (example)"
+                },
+                {
+                  "adminAuth": {
+                    "audience": "\u003clocal_audience\u003e",
+                    "clientId": "admin",
+                    "clientSecret": "unsafe",
+                    "issuer": "unsafe-auth",
+                    "method": "self_signed",
+                    "scope": "openid daml_ledger_api offline_access"
+                  },
+                  "auth": {
+                    "audience": "\u003clocal_audience\u003e",
+                    "clientId": "\u003clocal_user\u003e",
+                    "clientSecret": "unsafe",
+                    "issuer": "unsafe-auth",
+                    "method": "self_signed",
+                    "scope": "openid daml_ledger_api offline_access"
+                  },
+                  "description": "Connect to a local self-signed network",
+                  "id": "local",
+                  "identityProviderId": "idp-local",
+                  "ledgerApi": {
+                    "baseUrl": "http://localhost:3975"
+                  },
+                  "name": "Local (self-signed example)"
+                }
+              ],
               "server": {
                 "allowedOrigins": "*",
                 "dappPath": "/api/v0/dapp",
