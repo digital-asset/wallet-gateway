@@ -1,0 +1,76 @@
+# Top-level and deprecated bootstrap networks side by side: each section references
+# a secret of its own plus one shared secret that must only be rendered once.
+oauthSecrets:
+  SHARED_CLIENT_SECRET:
+    secretRef:
+      name: shared-secret
+      key: client-secret
+  TOP_LEVEL_CLIENT_SECRET:
+    secretRef:
+      name: top-level-secret
+      key: client-secret
+  BOOTSTRAP_CLIENT_SECRET:
+    secretRef:
+      name: bootstrap-secret
+      key: client-secret
+
+config:
+  idps:
+    - id: idp-a
+      type: oauth
+      issuer: https://idp-a.example.com
+      configUrl: https://idp-a.example.com/.well-known/openid-configuration
+  networks:
+    - id: net-top-level
+      name: Top-level network
+      description: Top-level network
+      identityProviderId: idp-a
+      ledgerApi:
+        baseUrl: https://top-level.example.com
+      auth:
+        method: authorization_code
+        scope: openid daml_ledger_api offline_access
+        audience: aud
+        clientId: user
+      adminAuth:
+        method: client_credentials
+        scope: daml_ledger_api
+        audience: aud
+        clientId: admin
+        clientSecretEnv: SHARED_CLIENT_SECRET
+      serviceAccountAuth:
+        method: client_credentials
+        scope: daml_ledger_api
+        audience: aud
+        clientId: service-account
+        clientSecretEnv: TOP_LEVEL_CLIENT_SECRET
+  bootstrap:
+    idps:
+      - id: idp-b
+        type: oauth
+        issuer: https://idp-b.example.com
+        configUrl: https://idp-b.example.com/.well-known/openid-configuration
+    networks:
+      - id: net-bootstrap
+        name: Bootstrap network
+        description: Bootstrap network
+        identityProviderId: idp-b
+        ledgerApi:
+          baseUrl: https://bootstrap.example.com
+        auth:
+          method: authorization_code
+          scope: openid daml_ledger_api offline_access
+          audience: aud
+          clientId: user
+        adminAuth:
+          method: client_credentials
+          scope: daml_ledger_api
+          audience: aud
+          clientId: admin
+          clientSecretEnv: SHARED_CLIENT_SECRET
+        serviceAccountAuth:
+          method: client_credentials
+          scope: daml_ledger_api
+          audience: aud
+          clientId: service-account
+          clientSecretEnv: BOOTSTRAP_CLIENT_SECRET
