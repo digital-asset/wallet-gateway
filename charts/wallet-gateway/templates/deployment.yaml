@@ -48,6 +48,9 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            {{- $config := .Values.config | default (dict) -}}
+            {{- /* env var names rendered so far, so that each is only rendered once */ -}}
+            {{- $seen := list -}}
             {{- /* FIREBLOCKS env vars */ -}}
             {{- if and .Values.signing .Values.signing.fireblocks }}
             - name: FIREBLOCKS_API_KEY
@@ -107,14 +110,19 @@ spec:
             {{- end }}
             {{- end }}
 
-            {{- /* dynamic env vars for oauth2 client secrets from bootstrap networks */ -}}
-            {{- range .Values.config.bootstrap.networks }}
-              {{- /* Create a list of the two auth blocks to check both */ -}}
-              {{- $authBlocks := list .auth .adminAuth -}}
-              {{- range $authBlocks }}
-                {{- if .clientSecretEnv }}
-                  {{- /* Pass 'root' as $ (global context) and the name of the env var */ -}}
-                  {{- include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .clientSecretEnv) | nindent 12 }}
+            {{- /* client secrets of top-level and deprecated bootstrap networks */ -}}
+            {{- range $network := concat (dig "networks" (list) $config | default (list)) (dig "bootstrap" "networks" (list) $config | default (list)) }}
+              {{- /* auth and adminAuth must be mapped as before; serviceAccountAuth is newly rendered, so an unmapped one must not fail */ -}}
+              {{- range $block, $required := dict "auth" true "adminAuth" true "serviceAccountAuth" false }}
+                {{- with get $network $block }}
+                  {{- if and .clientSecretEnv (not (has .clientSecretEnv $seen)) }}
+                    {{- $env := include "wallet-gateway.render.secretEnv" (dict "root" $ "envName" .clientSecretEnv "required" $required) }}
+                    {{- /* only mark rendered names as seen, so a later required reference is still validated */ -}}
+                    {{- if $env }}
+                      {{- $seen = append $seen .clientSecretEnv }}
+                      {{- $env | nindent 12 }}
+                    {{- end }}
+                  {{- end }}
                 {{- end }}
               {{- end }}
             {{- end }}
