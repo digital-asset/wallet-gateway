@@ -23,7 +23,7 @@ nixPkgs.mkShell (
       k3d
       kubeconform
       kubectl
-      nixfmt-rfc-style
+      nixfmt
       nodejs_24
       unixtools.watch
     ];
