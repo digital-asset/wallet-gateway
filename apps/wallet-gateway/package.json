@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@canton-network/wallet-gateway-remote": "1.14.0"
+    "@canton-network/wallet-gateway-remote": "1.15.0"
   },
   "allowScripts": {
     "better-sqlite3": false,
