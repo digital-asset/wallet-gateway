@@ -1,5 +1,5 @@
 FROM europe-docker.pkg.dev/da-images/public/docker/da-base-image:node-1.0.20 AS node
-FROM nginx/nginx-unprivileged:1.31.9-alpine-slim AS nginx
+FROM nginx/nginx-unprivileged:1.31.10-alpine-slim AS nginx
 
 FROM node AS build
 WORKDIR /app
